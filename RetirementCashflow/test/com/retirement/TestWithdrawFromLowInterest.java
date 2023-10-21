@@ -2,6 +2,7 @@ package com.retirement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ class TestWithdrawFromLowInterest {
 		Accounts.add(acc4);
 		Accounts.add(acc5);
 		Collections.sort(Accounts);
-		Accounts.get(0).withdraw(1000.0);
+		Accounts.get(0).withdraw(1000.0,LocalDate.of(2024, 1, 1));
 		assertEquals(48000.0, Accounts.get(0).getdBalance(),0.1);
 	}
 
