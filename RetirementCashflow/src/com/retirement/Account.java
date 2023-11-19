@@ -1,21 +1,40 @@
 package com.retirement;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Account implements Comparable<Account>{
 	private double dBalance;
 	private double dOpenBal;
 	private double dRate;
-
-	public Account(double dOpenBal, double dRate) {
+	private String strName;
+	private List<Transaction> transactions = new ArrayList<>();
+	
+	public Account(String strName, double dOpenBal, double dRate) {
 		this.dBalance = dOpenBal;
+		this.dOpenBal = dOpenBal;
+		this.strName = strName;
 		this.setdRate(dRate);
 	}
 
-	public void deposit(double dMoney) {
+	public void deposit(double dMoney,LocalDate dateIn) {
 		this.dBalance = this.dBalance + dMoney;
+		transactions.add(new Transaction(dMoney,dateIn,dBalance));
 	}
-	public void withdraw(double dMoney) {
+
+	public void withdraw(double dMoney,LocalDate dateOut) {
 		this.dBalance = this.dBalance - dMoney;
+		transactions.add(new Transaction((dMoney*-1),dateOut,dBalance));
 	}
+
+
+	@Override
+	public String toString() {
+		return "Account [dBalance=" + dBalance + ", dOpenBal=" + dOpenBal + ", dRate=" + dRate + ", strName=" + strName
+				+ ", transactions=" + transactions + "]";
+	}
+
 	public void addInterest() {
 		this.dBalance = this.dBalance * (1 + this.dRate);
 	}
