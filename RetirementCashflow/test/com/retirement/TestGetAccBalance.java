@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class TestGetAccBalance {
 
-    private final Account prems = new Account(50000.0,0.05);
+    private final Account prems = new Account("prems",50000.0,0.05,false);
 
     @Test
     void futureBal() {

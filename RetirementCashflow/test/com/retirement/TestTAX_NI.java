@@ -11,19 +11,25 @@ static double dbTaxhigh = 50000.0;
 static double dbTaxlowpc = 0.20;
 static double dbTaxhighpc = 0.40;
 
-static double dbNIhighpc = 0.02;
-static double dbNIlowpc = 0.12;
-static double dbNIhighwk = 962.0;
-static double dbNIlowwk  = 166.0;
+static double dbNIhighPaypc = 0.02;
+static double dbNIlowPaypc = 0.12;
+static double dbNIhighwk = 967.0;
+static double dbNIlowwk  = 242.0;
+
+TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
+NIParams niParams = new NIParams(dbNIhighPaypc,dbNIlowPaypc,dbNIhighwk,dbNIlowwk);
 
 	@Test
 	void test() {
-		double dTax = TaxNI.calcTax(65774.0,dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
+		double dTax = TaxNI.calcTax(65774.0,txParams);
 		assertEquals(13809.6, dTax,0.1);
-		dTax = TaxNI.calcTax(11500.0,dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
+		dTax = TaxNI.calcTax(11500.0,txParams);
 		assertEquals(0.0, dTax,0.1);
-		dTax = TaxNI.calcTax(32000.0,dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
+		dTax = TaxNI.calcTax(32000.0,txParams);
 		assertEquals(3900, dTax,0.1);
+		
+		double dNI = TaxNI.calcNI(65774.0, niParams);
+		assertEquals(4830.2,dNI,0.1);
 	}
 
 }
