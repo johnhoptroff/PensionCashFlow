@@ -9,12 +9,14 @@ public class Account implements Comparable<Account>{
 	private double dOpenBal;
 	private double dRate;
 	private String strName;
+	private boolean boolTaxable;
 	private List<Transaction> transactions = new ArrayList<>();
 	
-	public Account(String strName, double dOpenBal, double dRate) {
+	public Account(String strName, double dOpenBal, double dRate, boolean boolTaxable) {
 		this.dBalance = dOpenBal;
 		this.dOpenBal = dOpenBal;
 		this.strName = strName;
+		this.boolTaxable = boolTaxable;
 		this.setdRate(dRate);
 	}
 
@@ -57,11 +59,17 @@ public class Account implements Comparable<Account>{
 	public double getdBalance() {
 		return dBalance;
 	}
+	public boolean isTaxable() {
+		return boolTaxable;
+	}
 
 	@Override
 	public int compareTo(Account accOther) {
-		// TODO Auto-generated method stub
 		return Double.compare(getdRate(), accOther.getdRate());
+	}
+
+	public String getName() {
+		return strName;
 	}
 
 }

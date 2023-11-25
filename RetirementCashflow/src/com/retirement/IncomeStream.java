@@ -3,49 +3,71 @@ package com.retirement;
 import java.time.LocalDate;
 
 public class IncomeStream {
-private boolean isTimebound;
-private LocalDate dateStart;
-private double dStipend;
-private LocalDate dateEnd;
+	private LocalDate dateStart;
+	private double dStipend;
+	private LocalDate dateEnd;
+	private boolean isTaxable;
+	private String strName;
+	private boolean isLiableNI;
+	private double dRate;
 
-public IncomeStream(boolean isTimebound, LocalDate dateStart, double dStipend) {
-	super();
-	this.isTimebound = isTimebound;
-	this.dateStart = dateStart;
-	this.dStipend = dStipend;
-}
-public IncomeStream(Account accAvivaFund, boolean isTimebound, boolean isTaxable) {
-	// TODO Auto-generated constructor stub
-}
-public boolean isTimebound() {
-	return isTimebound;
-}
-
-public LocalDate getiStartYear() {
-	return dateStart;
-}
-
-public double getdStipend(LocalDate dateInstance) {
-
-	if(isTimebound && dateInstance.isAfter(dateStart)) {
-		return dStipend;
-	}else {
-		return 0.0;
+	public IncomeStream(String strName, LocalDate dateStart, LocalDate dateEnd, double dStipend, double dRate) {
+		super();
+		this.strName = strName;
+		this.dateEnd = dateEnd;
+		this.dateStart = dateStart;
+		this.dStipend = dStipend;
+		this.dRate = dRate;
 	}
-}
-public void setdStipend(double dStipend) {
-	this.dStipend = dStipend;
-}
-public void setEndDate(LocalDate dateEnd) {
-	this.dateEnd = dateEnd;
-}
-public LocalDate getEndDate() {
-	return dateEnd;
-}
-public void setdIncrease(double dIncrease) {
-	this.dStipend = dStipend + dIncrease;
-}
+
+	public boolean isTaxable() {
+		return isTaxable;
+	}
+
+	public void inflate() {
+		this.dStipend = this.dStipend * (1+ this.dRate);
+	}
+	
+	public void setTaxable(boolean isTaxable) {
+		this.isTaxable = isTaxable;
+	}
+
+	public boolean isLiableNI() {
+		return isLiableNI;
+	}
+
+	public LocalDate getdateStart() {
+		return dateStart;
+	}
+
+	public double getRate() {
+		return dRate;
+	}
+	
+	public String getName() {
+		return strName;
+	}
+
+	public double getdStipend() {
+		return dStipend;
+	}
+
+	public void setdStipend(double dStipend) {
+		this.dStipend = dStipend;
+	}
 
 
+	public LocalDate getEndDate() {
+		return dateEnd;
+	}
+
+	public void setdIncrease(double dIncrease) {
+		this.dStipend = dStipend + dIncrease;
+	}
+
+	public void setIncursNI(boolean boolIsNIable) {
+		this.isLiableNI = boolIsNIable;
+
+	}
 
 }

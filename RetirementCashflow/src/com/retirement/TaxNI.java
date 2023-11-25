@@ -1,9 +1,12 @@
 package com.retirement;
 
 public class TaxNI {
-
-	public static double calcTax(double dbGross, double dbTaxlow, double dbTaxhigh, double dbTaxlowpc,
-			double dbTaxhighpc) {
+ 
+	public static double calcTax(double dbGross, TaxParams txParams) {
+		double dbTaxlow = txParams.getTaxLow();
+		double dbTaxhigh = txParams.getTaxHigh();
+		double dbTaxlowpc = txParams.getTaxLowpc();
+		double dbTaxhighpc = txParams.getTaxHighpc();
 		double dbPayLow;
 		double dbPayHigh;
 		if (dbGross > dbTaxhigh) {
@@ -21,23 +24,28 @@ public class TaxNI {
 
 	}
 
-	public static double calcNI(double dbGross, double dbNIhighpc, double dbNIlowpc, double dbNIhighwk,
-			double dbNIlowwk, int intPaidMnths) {
+	public static double calcNI(double dbGross,NIParams niParams ) {
+		double dbNIhighPaypc = niParams.getNIhighPaypc();
+		double dbNIlowPaypc = niParams.getNIlowPaypc();
+		double dbNIhighwk = niParams.getNIhiWk();
+		double dbNIlowwk = niParams.getNIlowWk();
 		double dbPayWeekly;
-		dbPayWeekly = dbGross / (365 / 7);
+		
+		double dWeek = 365.0/7.0;
+		dbPayWeekly = dbGross / dWeek;
 		double dbPayLow;
 		double dbPayHigh;
-		if(dbPayWeekly > dbNIhighwk) {
-		   dbPayLow = dbNIhighwk - dbNIlowwk; //sets amount paid at low rate
-		   dbPayHigh = dbPayWeekly - dbNIhighwk; //pay higher NI on the rest of salary
-		} else if (dbPayWeekly < dbNIlowwk) {
+		if(dbPayWeekly > dbNIhighwk) { // pay above upper threshold
+		   dbPayLow = dbNIhighwk - dbNIlowwk; //sets amount paid between upper and lower thresholds
+		   dbPayHigh = dbPayWeekly - dbNIhighwk; //pay level above upper threshold
+		} else if (dbPayWeekly < dbNIlowwk) { // pay below lower limit
 		   dbPayLow = 0;
 		   dbPayHigh = 0;
 		} else { // pay between low and high
 		   dbPayHigh = 0;
 		   dbPayLow = dbPayWeekly - dbNIlowwk;
 		}
-		return ((dbPayLow * dbNIlowpc) + (dbPayHigh * dbNIhighpc)) * 52 * (intPaidMnths / 12);
+		return ((dbPayLow * dbNIlowPaypc) + (dbPayHigh * dbNIhighPaypc)) * 52;
 	}
 
 }
