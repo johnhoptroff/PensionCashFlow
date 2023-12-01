@@ -31,6 +31,7 @@ public class CashFlow {
 		this.dateInstantaneous = dateStart;
 		people.forEach((person) -> {
 			person.getAccounts().forEach((account) -> {
+				account.setHolder(person);
 				accounts.add(account);
 			});
 		});
@@ -56,12 +57,12 @@ public class CashFlow {
 					System.out.println(acc);
 					dGap = 0;
 				} else {
-					//TODO need to see if the account is taxable and take out the gross amount
 					// choose best account to take from based on the worst rate
 					Collections.sort(accounts);
 					Account acc = accounts.get(0);
 					double dAccBal = acc.getdBalance();
-					if(acc.isTaxable()) dGap = TaxNI.calcGrossFromNet(40000, dGap, txParams);
+					double dTaxableIncome = acc.getHolder().getTaxableIncome();
+					if(acc.isTaxable()) dGap = TaxNI.calcGrossFromNet(dTaxableIncome, dGap, txParams);
 					if (dAccBal >= dGap) {// get balance and if > dGap use full amount.
 						acc.withdraw(dGap, dateInstantaneous);
 						dGap = 0;

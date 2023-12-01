@@ -11,6 +11,7 @@ public class Account implements Comparable<Account>{
 	private String strName;
 	private boolean boolTaxable;
 	private List<Transaction> transactions = new ArrayList<>();
+	private Person persHolder;
 	
 	public Account(String strName, double dOpenBal, double dRate, boolean boolTaxable) {
 		this.dBalance = dOpenBal;
@@ -33,7 +34,7 @@ public class Account implements Comparable<Account>{
 
 	@Override
 	public String toString() {
-		return "Account [dBalance=" + dBalance + ", dOpenBal=" + dOpenBal + ", dRate=" + dRate + ", strName=" + strName
+		return "Account [Holder:" + persHolder.getStrName() + "balance:" + dBalance + ", dOpenBal=" + dOpenBal + ", dRate=" + dRate + ", strName=" + strName
 				+ ", transactions=" + transactions + "]";
 	}
 
@@ -70,6 +71,15 @@ public class Account implements Comparable<Account>{
 
 	public String getName() {
 		return strName;
+	}
+
+	public void setHolder(Person person) {
+		this.persHolder = person;
+		
+	}
+
+	public Person getHolder() {
+		return persHolder;
 	}
 
 }
