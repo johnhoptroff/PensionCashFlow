@@ -49,7 +49,7 @@ public class CashFlow {
 			while (dGap != 0) {
 				if(dNetWorth <=0.0)throw new Exception("funds depleted!");
 				if (dGap <= 0) {
-					// +ve gap so a surplus choose best account to add into based on the best rate
+					// shows a surplus so choose best account to add into based on the best rate
 					Collections.sort(accounts);
 					Account acc = accounts.get(accounts.size() - 1);
 					acc.deposit(-dGap, dateInstantaneous);
@@ -61,6 +61,7 @@ public class CashFlow {
 					Collections.sort(accounts);
 					Account acc = accounts.get(0);
 					double dAccBal = acc.getdBalance();
+					if(acc.isTaxable()) dGap = TaxNI.calcGrossFromNet(40000, dGap, txParams);
 					if (dAccBal >= dGap) {// get balance and if > dGap use full amount.
 						acc.withdraw(dGap, dateInstantaneous);
 						dGap = 0;
