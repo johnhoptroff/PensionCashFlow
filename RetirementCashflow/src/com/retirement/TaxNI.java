@@ -48,4 +48,19 @@ public class TaxNI {
 		return ((dbPayLow * dbNIlowPaypc) + (dbPayHigh * dbNIhighPaypc)) * 52;
 	}
 
+	public static double calcGrossFromNet(double dTaxable,double dbNetAmnt,TaxParams txParams ) {
+		double dRate=0.0;
+		if(dTaxable >= txParams.getTaxHigh()) {
+			dRate = txParams.getTaxHighpc();
+		}else {
+			if(dTaxable >= txParams.getTaxLow()) {
+				dRate = txParams.getTaxLowpc();
+					
+				}else {
+					dRate = 0.0;
+			}
+		}
+		return dbNetAmnt/(1-dRate);
+	}
+
 }

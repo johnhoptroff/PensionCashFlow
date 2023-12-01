@@ -1,5 +1,6 @@
 package com.retirement;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -8,6 +9,9 @@ public class Person {
 	private LocalDate dateBDay;
 	private Double dTaxableIncome = 0.0;
 	private Double dNIableIncome = 0.0;
+	private Double dTotalIncome = 0.0;
+	private Double dPensionAmnt = 0.0;
+	private Double dEmployerPenAmnt = 0.0;
 	private List<IncomeStream> streams;
 	private List<Account> accounts;
 	private Account accPensionPot;
@@ -54,6 +58,14 @@ public class Person {
 
 	}
 
+	public Double getdTotalIncome() {
+		return dTotalIncome;
+	}
+
+	public void setdTotalIncome(Double dTotalIncome) {
+		this.dTotalIncome = dTotalIncome;
+	}
+
 	public Account getPensionAccount() {
 		return this.accPensionPot;
 	}
@@ -65,7 +77,33 @@ public class Person {
 
 	@Override
 	public String toString() {
-		return "Person [strName=" + strName + ", dateBDay=" + dateBDay + ", dTaxableIncome=" + dTaxableIncome
-				+ ", dNIableIncome=" + dNIableIncome + "]";
+		StringBuffer sbOutput=new StringBuffer("----------------------------------\n");
+		sbOutput.append(strName + ", Birthday=" + dateBDay + ", TaxableIncome=" + NumberFormat.getCurrencyInstance().format(dTaxableIncome));
+		sbOutput.append(", NIableIncome=" + NumberFormat.getCurrencyInstance().format(dNIableIncome));
+		sbOutput.append(", TotalIncome=" + NumberFormat.getCurrencyInstance().format(dTotalIncome)) ;
+		sbOutput.append(", AVC account=" + accPensionPot.getName()); 
+		sbOutput.append("\nPension Contribution=" + NumberFormat.getCurrencyInstance().format(dPensionAmnt));
+		sbOutput.append(", Employer Contribution=" + NumberFormat.getCurrencyInstance().format(dEmployerPenAmnt));
+		sbOutput.append(("\n----------------------------------\n"));
+		return sbOutput.toString();
 	}
+
+	public void setPensionAmnt(double dPensionAmnt) {
+		this.dPensionAmnt = dPensionAmnt;
+	}
+
+	public void setEmployerPenAmnt(double dEmpContibution) {
+		this.dEmployerPenAmnt = dEmpContibution;
+		
+	}
+
+	public double getPensionAmnt() {
+		return dPensionAmnt;
+	}
+
+	public double getEmployerAmnt() {
+		return dEmployerPenAmnt;
+	}
+
+
 }

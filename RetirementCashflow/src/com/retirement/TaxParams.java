@@ -16,23 +16,24 @@ public class TaxParams {
 	}
 
 	public double getTaxLow() {
-
 		return this.dbTaxlow;
 	}
 
 	public double getTaxHigh() {
-
 		return this.dbTaxhigh;
 	}
 
 	public double getTaxLowpc() {
-
 		return this.dbTaxlowpc;
 	}
 
 	public double getTaxHighpc() {
-
 		return this.dbTaxhighpc;
+	}
+	
+	public void inflateParams(double dRate) {
+		dbTaxlow = dbTaxlow *(1 + dRate);
+		dbTaxhigh = dbTaxhigh *(1 + dRate);
 	}
 
 }

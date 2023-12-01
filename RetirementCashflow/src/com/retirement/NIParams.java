@@ -30,5 +30,9 @@ public class NIParams {
 	public double getNIlowWk() {
 		return this.dbNIlowwk;
 	}
+	public void inflateParams(double dRate) {
+		dbNIhighwk = dbNIhighwk *(1+dRate);
+		dbNIlowwk = dbNIlowwk *(1+dRate);
+	}
 
 }

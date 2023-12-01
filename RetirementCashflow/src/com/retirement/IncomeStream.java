@@ -10,6 +10,7 @@ public class IncomeStream {
 	private String strName;
 	private boolean isLiableNI;
 	private double dRate;
+	private boolean boolEmployment;
 
 	public IncomeStream(String strName, LocalDate dateStart, LocalDate dateEnd, double dStipend, double dRate) {
 		super();
@@ -27,7 +28,9 @@ public class IncomeStream {
 	public void inflate() {
 		this.dStipend = this.dStipend * (1+ this.dRate);
 	}
-	
+	public void setEmploment(boolean isEmployment) {
+		this.boolEmployment = isEmployment;
+	}
 	public void setTaxable(boolean isTaxable) {
 		this.isTaxable = isTaxable;
 	}
@@ -68,6 +71,10 @@ public class IncomeStream {
 	public void setIncursNI(boolean boolIsNIable) {
 		this.isLiableNI = boolIsNIable;
 
+	}
+
+	public boolean isEmployment() {
+		return boolEmployment;
 	}
 
 }

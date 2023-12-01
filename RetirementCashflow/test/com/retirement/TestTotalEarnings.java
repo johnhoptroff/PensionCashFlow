@@ -46,17 +46,10 @@ class TestTotalEarnings {
 	@Test
 	void test() {
         // test total earnings after 40 years 
-		
-		
-		
 
-		
-		//TODO much more unit testing needed here!!
-		//need to add the amount to pay into the pension pot
-		//the stream will then have to add that amount into the pension account
-		//taxable income needs to be reduced to account for the pension payment.
 		this.streamSalJohn.setTaxable(true);
 		this.streamSalJohn.setIncursNI(true);
+		this.streamSalJohn.setEmploment(true);
 		
 		this.streamWorkPenJohn.setTaxable(true);
 		this.streamWorkPenJohn.setIncursNI(false);
@@ -65,13 +58,14 @@ class TestTotalEarnings {
 		this.streamStatePenJohn.setIncursNI(false);
 		
 		this.streamRentJohn.setTaxable(true);
-		this.streamRentJohn.setIncursNI(true);
+		this.streamRentJohn.setIncursNI(false);
 		
 		this.streamRentLynne.setTaxable(true);
-		this.streamRentLynne.setIncursNI(true);
+		this.streamRentLynne.setIncursNI(false);
 		
 		this.streamSalLynne.setTaxable(true);
 		this.streamSalLynne.setIncursNI(true);
+		this.streamSalLynne.setEmploment(true);
 		
 		this.streamLGPSPenLynne.setTaxable(true);
 		this.streamLGPSPenLynne.setIncursNI(false);
@@ -106,7 +100,10 @@ class TestTotalEarnings {
 		Person persJohn = new Person("John Hoptroff",LocalDate.of(1968,4,23),StreamsJohn,accountsJohn);
 		Person persLynne = new Person("Lynne Hoptroff",LocalDate.of(1968,11,14),StreamsLynne,accountsLynne);
 		persJohn.setPensionPot(accAvivaJohn);
+		persJohn.setPensionAmnt(16651.0);
+		persJohn.setEmployerPenAmnt(4948.80);
 		persLynne.setPensionPot(accPruLynne);
+		persLynne.setPensionAmnt(10800.0);
 		List<Person> People = new ArrayList<>();
 		
 		People.add(persLynne);
@@ -115,10 +112,15 @@ class TestTotalEarnings {
 		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
 		
-		double dBudget = 58000.0;
+		double dBudget = 65000.0;
 		double dInflation = 0.05;
 		CashFlow cashFlow = new CashFlow(People,dBudget,dInflation,LocalDate.of(2024,1,1),txParams,niParams);
-		assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2035,12,31)),0.1);
+		try {
+			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058,12,31)),0.1);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	//assertEquals(5507.58, cashFlow.getResidual(40),0.1);
 	}
 

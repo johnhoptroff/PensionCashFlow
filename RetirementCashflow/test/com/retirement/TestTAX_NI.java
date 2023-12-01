@@ -30,6 +30,16 @@ NIParams niParams = new NIParams(dbNIhighPaypc,dbNIlowPaypc,dbNIhighwk,dbNIlowwk
 		
 		double dNI = TaxNI.calcNI(65774.0, niParams);
 		assertEquals(4830.2,dNI,0.1);
+		
+		double dGrossAmnt = TaxNI.calcGrossFromNet(55000, 10000, txParams);
+		assertEquals(16666.6667, dGrossAmnt,0.001);
+		
+		dGrossAmnt = TaxNI.calcGrossFromNet(12505, 10000, txParams);
+		assertEquals(12500.0, dGrossAmnt,0.001);
+		
+		dGrossAmnt = TaxNI.calcGrossFromNet(11900, 10000, txParams);
+		assertEquals(10000.0, dGrossAmnt,0.001);
+		
 	}
 
 }
