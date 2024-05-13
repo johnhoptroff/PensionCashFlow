@@ -52,7 +52,7 @@ public class CashFlow {
 				if (dGap <= 0) {
 					// shows a surplus so choose best account to add into based on the best rate
 					Collections.sort(accounts);
-					Account acc = accounts.get(accounts.size() - 1);
+					Account acc = accounts.get(accounts.size() - 1); // the account paying the most interest
 					acc.deposit(-dGap, dateInstantaneous);
 					System.out.println(acc);
 					dGap = 0;
@@ -71,6 +71,7 @@ public class CashFlow {
 						acc.withdraw(dAccBal, dateInstantaneous);
 						if (accounts.remove(acc))
 							System.out.println("element removed " + acc.getName());
+						    acc.close(date);
 						dGap = dGap - dAccBal;
 					}
 
@@ -78,17 +79,25 @@ public class CashFlow {
 				calcNetWorth(true);
 				System.out.println("Net worth at year end:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
 			}
-			inflateAll();
+			inflateAll(date);
 		}
 		calcNetWorth(true);
 		System.out.println("End date Net Worth:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
+		closeAllAccounts(dateEnd);
 		return dNetWorth;
 	}
 
-	private void inflateAll() {
+	private void closeAllAccounts(LocalDate date) {
+		accounts.forEach((account) -> {
+			account.close(date);
+		});
+		
+	}
+
+	private void inflateAll(LocalDate date) {
 		this.dBudget *= (1 + dInflation);
 		accounts.forEach((account) -> {
-			account.addInterest();
+			account.addInterest(date);
 		});
 		people.forEach((person) -> {
 			person.getStreams().forEach((stream) -> {

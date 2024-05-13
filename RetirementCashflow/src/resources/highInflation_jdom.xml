@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<people>
+    <person persId="01" name="john" dob="23/04/1968" pensionpot = "accAvivaJohn" pension-amt = "16651.0" pension-amt-emp = "4948.8">
+		<accounts>
+			<account accId="01" name="accAvivaJohn">
+				<op-bal>85687.5</op-bal>
+				<rate>0.03</rate>
+				<isTaxable>true</isTaxable>
+			</account>
+			<account accId="02" name="accBondsJohn">
+				<op-bal>50000.0</op-bal>
+				<rate>0.044</rate>
+				<isTaxable>false</isTaxable>
+			</account>
+			<account accId="03" name="accRRShares">
+				<op-bal>47993</op-bal>
+				<rate>0.02</rate>
+				<isTaxable>false</isTaxable>
+			</account>
+			<account accId="04" name="accFordJohn">
+				<op-bal>53137.0</op-bal>
+				<rate>0.0595</rate>
+				<isTaxable>true</isTaxable>
+			</account>
+			<account accId="05" name="accLumpJohn">
+				<op-bal>28562.5</op-bal>
+				<rate>0.04</rate>
+				<isTaxable>true</isTaxable>
+			</account>
+		</accounts>
+		<streams>
+			<stream strId="01" name="RentJohn">
+				<startdate>01/05/2022</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>5700.0</amt-npv>
+				<rate>0.05</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="02" name="RRPension-1">
+				<startdate>01/06/2024</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>11505.17</amt-npv>
+				<rate>0.02</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="03" name="RRPension-2">
+				<startdate>01/06/2024</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>6173.16</amt-npv>
+				<rate>0.05</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="04" name="RRPension-3">
+				<startdate>01/06/2024</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>10037.56</amt-npv>
+				<rate>0.025</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="05" name="StateJohn">
+				<startdate>23/04/2035</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>11502.0</amt-npv>
+				<rate>0.05</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="06" name="SalaryJohn">
+				<startdate>30/09/1986</startdate>
+				<enddate>01/06/2024</enddate>
+				<amt-npv>41240.0</amt-npv>
+				<rate>0.035</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>true</isNIable>
+				<isEmployment>true</isEmployment>
+			</stream>
+		</streams>
+    </person>
+	<person persId="02" name="lynne" dob="14/11/1968" pensionpot = "accPruLynne" pension-amt = "10800.0" pension-amt-emp = "0.0">
+		<accounts>
+			<account accId="01" name="accPruLynne">
+				<op-bal>12600.0</op-bal>
+				<rate>0.03</rate>
+				<isTaxable>true</isTaxable>
+			</account>
+			<account accId="02" name="accBondsLynne">
+				<op-bal>50000.0</op-bal>
+				<rate>0.044</rate>
+				<isTaxable>false</isTaxable>
+			</account>
+			<account accId="03" name="accISAs">
+				<op-bal>106172.0</op-bal>
+				<rate>0.03</rate>
+				<isTaxable>false</isTaxable>
+			</account>
+		</accounts>
+		<streams>
+			<stream strId="01" name="RentLynne">
+				<startdate>01/05/2022</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>5700.0</amt-npv>
+				<rate>0.05</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>	
+			<stream strId="02" name="LGPSPension">
+				<startdate>17/04/2025</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>8462.68</amt-npv>
+				<rate>0.04</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="03" name="* BankPen *">
+				<startdate>14/11/2028</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>6911.16</amt-npv>
+				<rate>0.04</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="04" name="StateLynne">
+				<startdate>14/11/2035</startdate>
+				<enddate>01/01/2100</enddate>
+				<amt-npv>11502.0</amt-npv>
+				<rate>0.05</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>false</isNIable>
+				<isEmployment>false</isEmployment>
+			</stream>
+			<stream strId="05" name="SalaryLynne">
+				<startdate>03/06/1986</startdate>
+				<enddate>17/04/2025</enddate>
+				<amt-npv>32000.0</amt-npv>
+				<rate>0.01</rate>
+				<isTaxable>true</isTaxable>
+				<isNIable>true</isNIable>
+				<isEmployment>true</isEmployment>
+			</stream>
+		</streams>
+    </person>
+</people>

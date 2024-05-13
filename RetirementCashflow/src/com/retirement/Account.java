@@ -1,17 +1,24 @@
 package com.retirement;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.retirement.fileutils.FileIO;
+
 public class Account implements Comparable<Account>{
 	private double dBalance;
 	private double dOpenBal;
+	private LocalDate dateClosed;
 	private double dRate;
 	private String strName;
 	private boolean boolTaxable;
+	private boolean boolLimitBalance;
 	private List<Transaction> transactions = new ArrayList<>();
 	private Person persHolder;
+	private Account accPayInterest;
 	
 	public Account(String strName, double dOpenBal, double dRate, boolean boolTaxable) {
 		this.dBalance = dOpenBal;
@@ -23,24 +30,38 @@ public class Account implements Comparable<Account>{
 
 	public void deposit(double dMoney,LocalDate dateIn) {
 		this.dBalance = this.dBalance + dMoney;
-		transactions.add(new Transaction(dMoney,dateIn,dBalance));
+		transactions.add(new Transaction("deposit",dMoney,dateIn,dBalance));
 	}
 
 	public void withdraw(double dMoney,LocalDate dateOut) {
 		this.dBalance = this.dBalance - dMoney;
-		transactions.add(new Transaction((dMoney*-1),dateOut,dBalance));
+		transactions.add(new Transaction("withdrawal",(dMoney*-1),dateOut,dBalance));
 	}
+	public void addInterest(LocalDate date) {
+		double dMoney = this.dBalance * this.dRate;
+		if(this.boolLimitBalance) {
+			accPayInterest.deposit(dMoney, date);
+		}else {
+			this.dBalance = this.dBalance + dMoney;
+			transactions.add(new Transaction("interest",dMoney,date,dBalance));		
+		}
 
+	}
 
 	@Override
 	public String toString() {
-		return "Account [Holder:" + persHolder.getStrName() + "balance:" + dBalance + ", dOpenBal=" + dOpenBal + ", dRate=" + dRate + ", strName=" + strName
-				+ ", transactions=" + transactions + "]";
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Account [Holder:" + persHolder.getStrName() + " balance:" + dBalance + ", dOpenBal=" + dOpenBal + ", dRate=" + dRate + ", strName=" + strName +"]") ;
+		buffer.append("\nTransactions:");
+		
+		transactions.forEach((transaction) -> {
+			buffer.append("\n" + transaction.toString());
+		});
+		
+		return buffer.toString();
 	}
 
-	public void addInterest() {
-		this.dBalance = this.dBalance * (1 + this.dRate);
-	}
+
 	public double getdOpenBal() {
 		return dOpenBal;
 	}
@@ -63,6 +84,15 @@ public class Account implements Comparable<Account>{
 	public boolean isTaxable() {
 		return boolTaxable;
 	}
+	public void setIsBalanceLimited(boolean boolBalLimited) {
+		this.boolLimitBalance = boolBalLimited;
+	}
+	public void setPayAccount(Account acc) {
+		this.accPayInterest = acc;
+	}
+	public LocalDate getdClosedDate() {
+		return dateClosed;
+	}
 
 	@Override
 	public int compareTo(Account accOther) {
@@ -80,6 +110,22 @@ public class Account implements Comparable<Account>{
 
 	public Person getHolder() {
 		return persHolder;
+	}
+
+	public void close(LocalDate date) {
+		// produce final statement and store on file
+    	File opFile = new File(this.strName + "finalstatement.txt");
+		System.out.println(this.strName + " Account closed");
+		StringBuffer buffer = new StringBuffer(this.toString());
+		this.dateClosed = date;
+		try {
+			FileIO.writeFile(opFile,buffer);
+			System.out.println("final statement file:" + opFile.getPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }

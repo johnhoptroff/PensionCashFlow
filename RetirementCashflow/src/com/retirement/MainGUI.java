@@ -4,17 +4,18 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
+
 import java.awt.GridLayout;
 import javax.swing.border.TitledBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.BoxLayout;
+import javax.swing.JTable;
+
 
 public class MainGUI extends JFrame {
 
@@ -45,6 +46,8 @@ public class MainGUI extends JFrame {
 	private JLabel lblNewLabel_6;
 	private JLabel lblNewLabel_7;
 	private JLabel lblNewLabel_8;
+	private JTable tableAccounts;
+	private JTable tableStreams;
 
 	/**
 	 * Launch the application.
@@ -66,8 +69,22 @@ public class MainGUI extends JFrame {
 	 * Create the frame.
 	 */
 	public MainGUI() {
+		initialize();
+		createEvents();
+	}
+	private void createEvents() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void initialize() {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 626, 300);
+		setBounds(100, 100, 630, 550);
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 
@@ -88,7 +105,17 @@ public class MainGUI extends JFrame {
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.add("People", panPeople);
 		tabbedPane.addTab("Accounts", panAccounts);
+		
+		tableAccounts = new JTable();
+		tableAccounts.setModel(new AccountsTableModel());
+		JScrollPane spAccTable = new JScrollPane(tableAccounts);
+		panAccounts.add(spAccTable);
 		tabbedPane.addTab("Streams", panStreams);
+		
+		tableStreams = new JTable();
+		tableStreams.setModel(new StreamsTableModel());
+		JScrollPane spStreamsTable = new JScrollPane(tableStreams);
+		panStreams.add(spStreamsTable);
 		tabbedPane.addTab("Tax & NI", panTaxNI);
 		panTaxNI.setLayout(new BoxLayout(panTaxNI, BoxLayout.X_AXIS));
 		panTaxParams = new JPanel();
