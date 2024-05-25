@@ -128,4 +128,8 @@ public class Account implements Comparable<Account>{
 		
 	}
 
+	public boolean getisTaxable() {
+		return this.boolTaxable;
+	}
+
 }

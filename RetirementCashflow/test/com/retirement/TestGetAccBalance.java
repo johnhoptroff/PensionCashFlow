@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class TestGetAccBalance {
 
     private final Account prems = new Account("prems",50000.0,0.05,false);
-	Person john = new Person("John Hoptroff", null, null, null);
+	Person john = new Person("John Hoptroff", null, null, null, null, 0, 0);
 
     @Test
     void futureBal() {

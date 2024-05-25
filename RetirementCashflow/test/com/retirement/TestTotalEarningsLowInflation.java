@@ -83,13 +83,9 @@ class TestTotalEarningsLowInflation {
 		
 		
 		
-		Person persJohn = new Person("John Hoptroff",LocalDate.of(1968,4,23),StreamsJohn,accountsJohn);
-		Person persLynne = new Person("Lynne Hoptroff",LocalDate.of(1968,11,14),StreamsLynne,accountsLynne);
-		persJohn.setPensionPot(accAvivaJohn);
-		persJohn.setPensionAmnt(16651.0);
-		persJohn.setEmployerPenAmnt(4948.80);
-		persLynne.setPensionPot(accPruLynne);
-		persLynne.setPensionAmnt(10800.0);
+		Person persJohn = new Person("John Hoptroff",LocalDate.of(1968,4,23),StreamsJohn,accountsJohn, accAvivaJohn, 16651.0, 4948.80);
+		Person persLynne = new Person("Lynne Hoptroff",LocalDate.of(1968,11,14),StreamsLynne,accountsLynne, accPruLynne, 10800.0, 0.0);
+
 		List<Person> People = new ArrayList<>();
 		
 		People.add(persLynne);

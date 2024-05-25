@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <people>
-    <person persId="01" name="john" dob="23/04/1968" pensionpot = "accAvivaJohn" pension-amt = "16651.0" pension-amt-emp = "4948.8">
+    <person persId="01" name="john" dob="23/04/1968">
+		<pension name="accAvivaJohn">
+			<pension-amt>16651.0</pension-amt>
+			<pension-amt-emp>4948.8</pension-amt-emp>
+			<op-bal>85687.5</op-bal>
+			<rate>0.03</rate>
+			<isTaxable>true</isTaxable>
+		</pension>
 		<accounts>
-			<account accId="01" name="accAvivaJohn">
-				<op-bal>85687.5</op-bal>
-				<rate>0.03</rate>
-				<isTaxable>true</isTaxable>
-			</account>
 			<account accId="02" name="accBondsJohn">
 				<op-bal>50000.0</op-bal>
 				<rate>0.044</rate>
@@ -85,13 +87,15 @@
 			</stream>
 		</streams>
     </person>
-	<person persId="02" name="lynne" dob="14/11/1968" pensionpot = "accPruLynne" pension-amt = "10800.0" pension-amt-emp = "0.0">
+	<person persId="02" name="lynne" dob="14/11/1968">
+		<pension name="accPruLynne">
+			<pension-amt>10800.0</pension-amt>
+			<pension-amt-emp>0.0</pension-amt-emp>
+			<op-bal>12600.0</op-bal>
+			<rate>0.03</rate>
+			<isTaxable>true</isTaxable>
+		</pension>
 		<accounts>
-			<account accId="01" name="accPruLynne">
-				<op-bal>12600.0</op-bal>
-				<rate>0.03</rate>
-				<isTaxable>true</isTaxable>
-			</account>
 			<account accId="02" name="accBondsLynne">
 				<op-bal>50000.0</op-bal>
 				<rate>0.044</rate>

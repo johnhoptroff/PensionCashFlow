@@ -87,13 +87,8 @@ class TestTotalEarningsMaxLump {
 		
 		
 		
-		Person persJohn = new Person("John Hoptroff",LocalDate.of(1968,4,23),StreamsJohn,accountsJohn);
-		Person persLynne = new Person("Lynne Hoptroff",LocalDate.of(1968,11,14),StreamsLynne,accountsLynne);
-		persJohn.setPensionPot(accAvivaJohn);
-		persJohn.setPensionAmnt(16651.0);
-		persJohn.setEmployerPenAmnt(4948.80);
-		persLynne.setPensionPot(accPruLynne);
-		persLynne.setPensionAmnt(10800.0);
+		Person persJohn = new Person("John Hoptroff",LocalDate.of(1968,4,23),StreamsJohn,accountsJohn, accAvivaJohn, 16651.0, 4948.80);
+		Person persLynne = new Person("Lynne Hoptroff",LocalDate.of(1968,11,14),StreamsLynne,accountsLynne, accPruLynne, 10800.0, 0.0);
 		List<Person> People = new ArrayList<>();
 		
 		People.add(persLynne);
@@ -102,11 +97,11 @@ class TestTotalEarningsMaxLump {
 		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
 		
-		double dBudget = 62630.0;
+		double dBudget = 73700.0;
 		double dInflation = 0.05;
 		CashFlow cashFlow = new CashFlow(People,dBudget,dInflation,LocalDate.of(2024,1,1),txParams,niParams);
 		try {
-			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058,12,31)),0.1);
+			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2038,12,31)),0.1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

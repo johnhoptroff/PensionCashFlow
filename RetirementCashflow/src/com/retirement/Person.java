@@ -16,11 +16,15 @@ public class Person {
 	private List<Account> accounts;
 	private Account accPensionPot;
 
-	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<Account> accounts) {
+	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<Account> accounts,
+			Account accPensionPot, double dEmpContribution, double dPensionAmnt) {
 		this.strName = strName;
 		this.dateBDay = dateBDay;
 		this.streams = streams;
 		this.accounts = accounts;
+		this.accPensionPot = accPensionPot;
+		this.dEmployerPenAmnt = dEmpContribution;
+		this.dPensionAmnt = dPensionAmnt;
 
 	}
 
@@ -48,11 +52,6 @@ public class Person {
 		this.dNIableIncome = dNIableIncome;
 	}
 
-	public void setPensionPot(Account accPensionPot) {
-		this.accPensionPot = accPensionPot;
-
-	}
-
 	public List<Account> getAccounts() {
 		return this.accounts;
 
@@ -77,24 +76,16 @@ public class Person {
 
 	@Override
 	public String toString() {
-		StringBuffer sbOutput=new StringBuffer("----------------------------------\n");
-		sbOutput.append(strName + ", Birthday=" + dateBDay + ", TaxableIncome=" + NumberFormat.getCurrencyInstance().format(dTaxableIncome));
+		StringBuffer sbOutput = new StringBuffer("----------------------------------\n");
+		sbOutput.append(strName + ", Birthday=" + dateBDay + ", TaxableIncome="
+				+ NumberFormat.getCurrencyInstance().format(dTaxableIncome));
 		sbOutput.append(", NIableIncome=" + NumberFormat.getCurrencyInstance().format(dNIableIncome));
-		sbOutput.append(", TotalIncome=" + NumberFormat.getCurrencyInstance().format(dTotalIncome)) ;
-		sbOutput.append(", AVC account=" + accPensionPot.getName()); 
+		sbOutput.append(", TotalIncome=" + NumberFormat.getCurrencyInstance().format(dTotalIncome));
+		sbOutput.append(", AVC account=" + accPensionPot.getName());
 		sbOutput.append("\nPension Contribution=" + NumberFormat.getCurrencyInstance().format(dPensionAmnt));
 		sbOutput.append(", Employer Contribution=" + NumberFormat.getCurrencyInstance().format(dEmployerPenAmnt));
 		sbOutput.append(("\n----------------------------------\n"));
 		return sbOutput.toString();
-	}
-
-	public void setPensionAmnt(double dPensionAmnt) {
-		this.dPensionAmnt = dPensionAmnt;
-	}
-
-	public void setEmployerPenAmnt(double dEmpContibution) {
-		this.dEmployerPenAmnt = dEmpContibution;
-		
 	}
 
 	public double getPensionAmnt() {
@@ -105,5 +96,14 @@ public class Person {
 		return dEmployerPenAmnt;
 	}
 
+	public void setPensionAmnt(double dPensAmnt) {
+		this.dPensionAmnt = dPensAmnt;
+		
+	}
+
+	public void setEmployerPenAmnt(double dEmployerAmnt) {
+		this.dEmployerPenAmnt = dEmployerAmnt;
+		
+	}
 
 }
