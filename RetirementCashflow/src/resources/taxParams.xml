@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<stopsParams paramsId="01" date="06/04/2024">
+    <params>
+        <tax>
+            <taxLow>12500.0</taxLow>
+            <taxHigh>50000.0</taxHigh>
+            <taxLowpc>0.2</taxLowpc>
+            <taxHighpc>0.4</taxHighpc>
+        </tax>
+        <ni>
+            <NILowwk>242.0</NILowwk>
+            <NIHighwk>967.0</NIHighwk>
+            <NILowPaypc>0.02</NILowPaypc>
+            <NIHighPaypc>0.12</NIHighPaypc>
+        </ni>
+    </params>
+</stopsParams>

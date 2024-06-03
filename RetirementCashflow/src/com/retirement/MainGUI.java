@@ -11,9 +11,13 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JTable;
 
 
@@ -73,7 +77,15 @@ public class MainGUI extends JFrame {
 		createEvents();
 	}
 	private void createEvents() {
-		// TODO Auto-generated method stub
+		ActionListener actionListener = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		};
 		
 	}
 
@@ -176,6 +188,8 @@ public class MainGUI extends JFrame {
 		panNIParams.add(textField_highNIRate);
 		textField_highNIRate.setColumns(10);
 		panNIParams.setBorder(new TitledBorder(null, "NI params", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		JButton buttBrowse = new JButton("Browse...");
+		panTaxNI.add(buttBrowse);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 	}
 
