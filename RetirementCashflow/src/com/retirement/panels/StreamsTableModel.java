@@ -1,9 +1,11 @@
-package com.retirement;
+package com.retirement.panels;
 
 import java.util.ArrayList;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+
+import com.retirement.IncomeStream;
 
 public class StreamsTableModel extends AbstractTableModel {
 	/**

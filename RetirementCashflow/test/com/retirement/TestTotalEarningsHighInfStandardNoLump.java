@@ -9,27 +9,34 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class TestTotalEarningsMaxLump {
-	private final Account accAvivaJohn = new Account("Aviva John",85687.5, 0.03,true); // added redundo no 2024 contrs actual = £114250.0
-	//private final Account accTransPenJohn = new Account("Transfer John",185250.0, 0.03,true); // 25% taken out transfered to Lump acc
+class TestTotalEarningsHighInfStandardNoLump {
+	private final Account accAvivaJohn = new Account("Aviva John",88926.5, 0.03,true); // added redundo no 2024 contrs actual so take off 8999.92
 	private final Account accBondsJohn = new Account("Bonds John",50000.0,0.044,false);
 	private final Account accBondsLynne = new Account("Bonds Lynne",50000.0,0.044,false);
 	private final Account accRRShares = new Account("R-R shares",47993.0,0.02,false);
 	private final Account accISAs = new Account("ISAs",106172.0,0.03,false);
 	private final Account accPruLynne = new Account("Pru Lynne",12600.0,0.03,true); // no 2024 contributions
 	private final Account accFordJohn = new Account("Ford John",53137.0,0.0595,true);
-	private final Account accLumpJohn = new Account("Lump John",28562.5,0.04,true); // 25% of Aviva
+	private final Account accLumpJohn = new Account("Lump John",32642.14,0.04,true); // 25% of Aviva
 	List<Account> accountsLynne = new ArrayList<>();
 	List<Account> accountsJohn = new ArrayList<>();
 	
-	private final IncomeStream streamRentJohn = new IncomeStream("RentJohn",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5700.0,0.05,true,false,false);
-	private final IncomeStream streamRentLynne = new IncomeStream("RentLynne",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5700.0,0.05,true,false,false);
+	private final IncomeStream streamRentJohn = new IncomeStream("RentJohn",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5370.0,0.05,true,false,false);
+	private final IncomeStream streamRentLynne = new IncomeStream("RentLynne",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5370.0,0.05,true,false,false);
 	
 	private final IncomeStream streamWorkPen1John = new IncomeStream("*RRPension 1",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),11505.17,0.02,true,false,false);
 	private final IncomeStream streamWorkPen3John = new IncomeStream("*RRPension 3",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),6173.16,0.05,true,false,false);
-	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),10037.56,0.025,true,false,false);
 	
+	// switch between bridged, not and half bridged
+	// reduced pension if bridge taken
+	//private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),10037.56,0.025,true,false,false);
+	//private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),4988.78,0.025,true,false,false);
+	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),7586.34,0.025,true,false,false);
+	// temporary pension
 	//private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),10350.0,0.025,true,false,false);
+	private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),5025.0,0.025,true,false,false);
+	//private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),0.0,0.025,true,false,false);
+	// end of switch
 	
 	private final IncomeStream streamLGPSPenLynne = new IncomeStream("LGPSPension",LocalDate.of(2025,4,17),LocalDate.of(2100,1,1),8462.68,0.04,true,false,false);
 	private final IncomeStream streamBankPenLynne = new IncomeStream("* BankPen  *",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),6911.16,0.04,true,false,false);
@@ -67,7 +74,7 @@ class TestTotalEarningsMaxLump {
 		StreamsJohn.add(streamWorkPen1John);
 		StreamsJohn.add(streamWorkPen2John);
 		StreamsJohn.add(streamWorkPen3John);
-		//StreamsJohn.add(streamWorkPen4John);
+		StreamsJohn.add(streamWorkPen4John);
 		StreamsJohn.add(streamStatePenJohn);
 		
 		accBondsLynne.setIsBalanceLimited(true);
@@ -97,11 +104,11 @@ class TestTotalEarningsMaxLump {
 		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
 		
-		double dBudget = 73700.0;
+		double dBudget = 62100.0;
 		double dInflation = 0.05;
 		CashFlow cashFlow = new CashFlow(People,dBudget,dInflation,LocalDate.of(2024,1,1),txParams,niParams);
 		try {
-			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2038,12,31)),0.1);
+			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058,12,31)),0.1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

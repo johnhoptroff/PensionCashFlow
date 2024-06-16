@@ -1,7 +1,0 @@
-Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=100000.0, dRate=0.023, strName=Premium Bonds]
-Transactions:
-withdrawal	2031-01-01	93728.01907205419
-withdrawal	2032-01-01	65578.02839369295
-withdrawal	2033-01-01	36640.86158591253
-withdrawal	2034-01-01	6895.082200825185
-withdrawal	2035-01-01	0.0

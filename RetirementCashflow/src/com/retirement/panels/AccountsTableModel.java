@@ -1,8 +1,10 @@
-package com.retirement;
+package com.retirement.panels;
 
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.retirement.Account;
 
 public class AccountsTableModel extends AbstractTableModel {
 
