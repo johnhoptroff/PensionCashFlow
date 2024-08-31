@@ -1,7 +1,5 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=47993.0, dRate=0.02, strName=R-R shares]
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=25000.0, dRate=0.02, strName=R-R shares]
 Transactions:
-withdrawal	2024-01-01	36181.10831978442
-interest	2024-01-01	36904.73048618011
-withdrawal	2025-01-01	9706.797431056817
-interest	2025-01-01	9900.933379677954
+withdrawal	2025-01-01	9308.823529411764
+interest	2025-01-01	9495.0
 withdrawal	2026-01-01	0.0

@@ -37,48 +37,78 @@ public class CashFlow {
 		});
 	}
 
+	private void rationaliseAccounts(double dGap) throws Exception{
+		while (dGap != 0) {
+			if(dNetWorth <=0.0)throw new Exception("funds depleted!");
+			if (dGap <= 0) {
+				// shows a surplus so choose best account to add into based on the best rate
+				Collections.sort(accounts);
+				Account acc = accounts.get(accounts.size() - 1); // the account paying the most interest
+				acc.deposit(-dGap, dateInstantaneous);
+				System.out.println(acc);
+				dGap = 0;
+			} else {
+				// choose best account to take from based on the worst rate
+				Collections.sort(accounts);
+				Account acc = accounts.get(0);
+				double dAccBal = acc.getdBalance();
+				double dTaxableIncome = acc.getHolder().getTaxableIncome();
+				if(acc.isTaxable()) dGap = TaxNI.calcGrossFromNet(dTaxableIncome, dGap, txParams);
+				if (dAccBal >= dGap) {// get balance and if > dGap use full amount.
+					acc.withdraw(dGap, dateInstantaneous);
+					dGap = 0;
+				} else {// if balance is less than full amount, remove all funds and delete account from
+						// list
+					acc.withdraw(dAccBal, dateInstantaneous);
+					if (accounts.remove(acc))
+						System.out.println("element removed " + acc.getName());
+					    acc.close(dateInstantaneous);
+					dGap = dGap - dAccBal;
+				}
+
+			}
+			calcNetWorth(true);
+			System.out.println("Net worth at year end:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
+		}
+	}
 	public double getResidual(LocalDate dateEnd) throws Exception {
 		for (LocalDate date = dateStart; date.isBefore(dateEnd); date = date.plusYears(1)) {
 			// loop through all the years in the term
 			// date set at January the first of the year
 			// at the loop end when accounts are settled it assumes the date is year end
 			dateInstantaneous = date;
-			double dGap = getFundingGap();
+			calcNetWorth(false);
 			Collections.sort(accounts);
-			calcNetWorth(true);
-			System.out.println("Net Worth at year beginning:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
-			while (dGap != 0) {
-				if(dNetWorth <=0.0)throw new Exception("funds depleted!");
-				if (dGap <= 0) {
-					// shows a surplus so choose best account to add into based on the best rate
-					Collections.sort(accounts);
-					Account acc = accounts.get(accounts.size() - 1); // the account paying the most interest
-					acc.deposit(-dGap, dateInstantaneous);
-					System.out.println(acc);
-					dGap = 0;
-				} else {
-					// choose best account to take from based on the worst rate
-					Collections.sort(accounts);
-					Account acc = accounts.get(0);
-					double dAccBal = acc.getdBalance();
-					double dTaxableIncome = acc.getHolder().getTaxableIncome();
-					if(acc.isTaxable()) dGap = TaxNI.calcGrossFromNet(dTaxableIncome, dGap, txParams);
-					if (dAccBal >= dGap) {// get balance and if > dGap use full amount.
-						acc.withdraw(dGap, dateInstantaneous);
-						dGap = 0;
-					} else {// if balance is less than full amount, remove all funds and delete account from
-							// list
-						acc.withdraw(dAccBal, dateInstantaneous);
-						if (accounts.remove(acc))
-							System.out.println("element removed " + acc.getName());
-						    acc.close(date);
-						dGap = dGap - dAccBal;
-					}
+			calcTotalNetIncome();
+			double dGap = dBudget - dTotalNetIncome;
+			rationaliseAccounts(dGap);
 
-				}
-				calcNetWorth(true);
-				System.out.println("Net worth at year end:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
-			}
+			System.out.println("Net Worth at year beginning:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
+
+			inflateAll(date);
+		}
+		calcNetWorth(true);
+		System.out.println(dateInstantaneous + " End date Net Worth:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
+		closeAllAccounts(dateEnd);
+		return dNetWorth;
+	}
+	public double runMaxEarnings(LocalDate dateEnd) throws Exception {
+		for (LocalDate date = dateStart; date.isBefore(dateEnd); date = date.plusYears(1)) {
+			// loop through all the years in the term
+			// date set at January the first of the year
+			// at the loop end when accounts are settled it assumes the date is year end
+			dateInstantaneous = date;
+			calcNetWorth(true);
+			Collections.sort(accounts);
+			calcTotalNetIncome();
+			
+			double dGap = dNetWorth / (dateEnd.getYear()- dateInstantaneous.getYear());
+			
+			rationaliseAccounts(dGap);
+
+			System.out.println("Net Worth at year beginning:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
+			double dSpendPower = dGap + dTotalNetIncome;
+			System.out.println("Years Spending power:" + NumberFormat.getCurrencyInstance().format(dSpendPower));
 			inflateAll(date);
 		}
 		calcNetWorth(true);
@@ -128,12 +158,12 @@ public class CashFlow {
 		this.dInflation = dInflation;
 	}
 
-	private double getFundingGap() {
+	private void calcTotalNetIncome() {
 		// need everyone's taxable income, then the net income, then add up
 		this.dTotalNetIncome = 0.0;
 		System.out.println("=========================================================");
 		System.out.println("Running calc for date:" + dateInstantaneous);
-		System.out.println("Budget:" + dBudget);
+		System.out.println("Budget:" + NumberFormat.getCurrencyInstance().format(dBudget));
 		// loop through all streams to add the total earnings for each person
 		// streams.forEach((stream) -> addTotal(stream));
 
@@ -147,14 +177,14 @@ public class CashFlow {
 			double dTaxed = TaxNI.calcTax(person.getTaxableIncome(), txParams);
 			double dNId = TaxNI.calcNI(person.getNIableIncome(), niParams);
 			dTotalNetIncome = dTotalNetIncome + person.getdTotalIncome() - (dTaxed + dNId);
-			System.out.print(person + "Tax paid:" + NumberFormat.getCurrencyInstance().format(dTaxed));
-			System.out.print(" NI paid:" + NumberFormat.getCurrencyInstance().format(dNId));
-			System.out.println(" Total stops:" + NumberFormat.getCurrencyInstance().format(dTaxed + dNId));
+			//System.out.print(person + "Tax paid:" + NumberFormat.getCurrencyInstance().format(dTaxed));
+			//System.out.print(" NI paid:" + NumberFormat.getCurrencyInstance().format(dNId));
+			//System.out.println(" Total stops:" + NumberFormat.getCurrencyInstance().format(dTaxed + dNId));
 		});
-		System.out.print("\nTotal net income: " + NumberFormat.getCurrencyInstance().format(dTotalNetIncome));
-		System.out.print(" Budget: " + NumberFormat.getCurrencyInstance().format(dBudget));
-		System.out.println(" gap: " + NumberFormat.getCurrencyInstance().format(dBudget - dTotalNetIncome));
-		return (dBudget - dTotalNetIncome);
+		//System.out.print("\nTotal net income: " + NumberFormat.getCurrencyInstance().format(dTotalNetIncome));
+		//System.out.print(" Budget: " + NumberFormat.getCurrencyInstance().format(dBudget));
+		//System.out.println(" gap: " + NumberFormat.getCurrencyInstance().format(dBudget - dTotalNetIncome));
+
 	}
 
 	private void addTotal(IncomeStream stream) { // forward looking for the whole year
@@ -185,13 +215,18 @@ public class CashFlow {
 		}
 		double dCummulitive = this.personInstantaneous.getdTotalIncome() + dEarning;
 		this.personInstantaneous.setdTotalIncome(dCummulitive);
-		System.out.print(stream.getName() + "\t" + stream.getdateStart() + "\t" + stream.getEndDate() + "\t"
+		/*
+		 * 
+		 * 		System.out.print(stream.getName() + "\t" + stream.getdateStart() + "\t" + stream.getEndDate() + "\t"
 				+ " stipend:" + NumberFormat.getCurrencyInstance().format(dStipend) + "\t");
 		System.out.print(" Taxable :" + NumberFormat.getCurrencyInstance().format(dTaxable) + "\t");
 		System.out.print(" NIable  :" + NumberFormat.getCurrencyInstance().format(dNIable) + "\t");
 		System.out.print(" Earnings:" + NumberFormat.getCurrencyInstance().format(dCummulitive) + "\t");
 		System.out.print("Proportion:");
 		System.out.printf("%.3f%n", dProportion);
+		 * 
+		 */
+
 		
 
 	}
