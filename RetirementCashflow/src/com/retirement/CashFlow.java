@@ -39,7 +39,7 @@ public class CashFlow {
 
 	private void rationaliseAccounts(double dGap) throws Exception{
 		while (dGap != 0) {
-			if(dNetWorth <=0.0)throw new Exception("funds depleted!");
+			//if(dNetWorth <=0.0)throw new Exception("funds depleted!");
 			if (dGap <= 0) {
 				// shows a surplus so choose best account to add into based on the best rate
 				Collections.sort(accounts);
