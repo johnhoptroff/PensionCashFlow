@@ -9,15 +9,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class TestTotalEarningsHighInfStandardNoLump {
-	private final Account accAvivaJohn = new Account("Aviva John",88926.5, 0.03,true); // added redundo no 2024 contrs actual so take off 8999.92
-	private final Account accBondsJohn = new Account("Bonds John",50000.0,0.044,false);
-	private final Account accBondsLynne = new Account("Bonds Lynne",50000.0,0.044,false);
+class TestTotalEarningsmoderateInfStandardNoLump {
+	private final Account accAvivaJohn = new Account("Aviva John",88926.5, 0.02,true); // added redundo no 2024 contributions actual so take off 8999.92
+	private final Account accBondsJohn = new Account("Bonds John",50000.0,0.025,false);
+	private final Account accBondsLynne = new Account("Bonds Lynne",50000.0,0.025,false);
 	private final Account accRRShares = new Account("R-R shares",47993.0,0.02,false);
-	private final Account accISAs = new Account("ISAs",106172.0,0.03,false);
-	private final Account accPruLynne = new Account("Pru Lynne",12600.0,0.03,true); // no 2024 contributions
-	private final Account accFordJohn = new Account("Ford John",53137.0,0.0595,true);
-	private final Account accLumpJohn = new Account("Lump John",32642.14,0.04,true); // 25% of Aviva
+	private final Account accISAs = new Account("ISAs",106172.0,0.022,false);
+	private final Account accPruLynne = new Account("Pru Lynne",12600.0,0.025,true); // no 2024 contributions
+	private final Account accFordJohn = new Account("Ford John",53137.0,0.03,true);
+	private final Account accLumpJohn = new Account("Lump John",32642.14,0.025,true); // 25% of Aviva
 	List<Account> accountsLynne = new ArrayList<>();
 	List<Account> accountsJohn = new ArrayList<>();
 	
@@ -29,13 +29,13 @@ class TestTotalEarningsHighInfStandardNoLump {
 	
 	// switch between bridged, not and half bridged
 	// reduced pension if bridge taken
-	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),10037.56,0.025,true,false,false);
-	//private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),4988.78,0.025,true,false,false);
+	//private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),10037.56,0.025,true,false,false);
+	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),4988.78,0.025,true,false,false);
 	//private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),7586.34,0.025,true,false,false);
 	// temporary pension
-	//private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),10350.0,0.025,true,false,false);
+	private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),10350.0,0.025,true,false,false);
 	//private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),5025.0,0.025,true,false,false);
-	private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),0.0,0.025,true,false,false);
+	//private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),0.0,0.025,true,false,false);
 	// end of switch
 	
 	private final IncomeStream streamLGPSPenLynne = new IncomeStream("LGPSPension",LocalDate.of(2025,4,17),LocalDate.of(2100,1,1),8462.68,0.04,true,false,false);
@@ -104,7 +104,7 @@ class TestTotalEarningsHighInfStandardNoLump {
 		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
 		
-		double dBudget = 58300.0;
+		double dBudget = 75200.0;
 		double dInflation = 0.025;
 		double dIncrease = 12000.0;
 		LocalDate dateKinkPoint = LocalDate.of(2046, 1, 1);
@@ -112,7 +112,7 @@ class TestTotalEarningsHighInfStandardNoLump {
 		SpendingProfile spTarget = new SpendingProfile(dBudget,dInflation,dateStart,dateKinkPoint,dIncrease);
 		CashFlow cashFlow = new CashFlow(People,spTarget,LocalDate.of(2024,1,1),txParams,niParams);
 		try {
-			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058,12,31)),0.1);
+			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2028,12,31)),0.1); //was 58
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
