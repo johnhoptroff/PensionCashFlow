@@ -69,7 +69,7 @@ public class FileIO {
 		pw.print(sb);
 
 		pw.close();
-		System.out.println("Content of String written to File.");
+		//System.out.println("Content of String written to File.");
 
 	}
 	public static ArrayList<String> listDIR(String strWorkDir) {

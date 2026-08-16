@@ -3,6 +3,7 @@ package com.retirement;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
@@ -12,13 +13,15 @@ class TestTAX_NI {
 	static double dbTaxhigh = 50000.0;
 	static double dbTaxlowpc = 0.20;
 	static double dbTaxhighpc = 0.40;
+	static double dbISAlimit = 20000.0;
 
 	static double dbNIhighPaypc = 0.02;
 	static double dbNIlowPaypc = 0.12;
 	static double dbNIhighwk = 967.0;
 	static double dbNIlowwk = 242.0;
+	static LocalDate dtFrozenTh = LocalDate.of(2031, 4, 5);
 
-	TaxParams txParams = new TaxParams(dbTaxlow, dbTaxhigh, dbTaxlowpc, dbTaxhighpc);
+	TaxParams txParams = new TaxParams(dbTaxlow, dbTaxhigh, dbTaxlowpc, dbTaxhighpc, dbISAlimit,dtFrozenTh);
 	NIParams niParams = new NIParams(dbNIhighPaypc, dbNIlowPaypc, dbNIhighwk, dbNIlowwk);
 	File file = new File("src/resources/taxparams.xml");
 

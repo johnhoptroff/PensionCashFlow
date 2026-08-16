@@ -1,0 +1,7 @@
+Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=7504.0, dRate=0.025, strName=Pru_LH_notax]
+Transactions:
+interest	2025-01-01	7691.6
+interest	2026-01-01	7883.89
+withdrawal	2027-12-31	6895.124223496766
+interest	2027-01-01	7067.502329084185
+withdrawal	2028-12-31	0.0

@@ -1,4 +1,4 @@
-Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=10600.0, dRate=0.046, strName=Ford Lynne]
+Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=10600.0, dRate=0.046, strName=Ford_Lynne]
 Transactions:
 interest	2025-01-01	11087.6
 interest	2026-01-01	11597.6296
@@ -22,6 +22,6 @@ interest	2043-01-01	24911.95847766641
 interest	2044-01-01	26057.908567639064
 interest	2045-01-01	27256.572361750463
 interest	2046-01-01	28510.374690390985
-withdrawal	2047-01-01	10501.64818483207
+withdrawal	2047-12-31	10501.64818483207
 interest	2047-01-01	10984.724001334343
-withdrawal	2048-01-01	0.0
+withdrawal	2048-12-31	0.0

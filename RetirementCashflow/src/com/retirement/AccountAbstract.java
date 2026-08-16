@@ -14,17 +14,18 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 	private LocalDate dateClosed;
 	private double dRate;
 	private String strName;
-	private boolean boolTaxable;
+	private boolean boolEarnings;
+	private boolean boolTaxInterest;
 	private boolean boolLimitBalance;
 	private List<Transaction> transactions = new ArrayList<>();
 	private Person persHolder;
 	private AccountAbstract accPayInterest;
+	private double dbMaximumBalance=1e10;
 	
-	public AccountAbstract(String strName, double dOpenBal, double dRate, boolean boolTaxable) {
+	public AccountAbstract(String strName, double dOpenBal, double dRate) {
 		this.dBalance = dOpenBal;
 		this.dOpenBal = dOpenBal;
 		this.strName = strName;
-		this.boolTaxable = boolTaxable;
 		this.setdRate(dRate);
 	}
 
@@ -81,8 +82,11 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 	public double getdBalance() {
 		return dBalance;
 	}
-	public boolean isTaxable() {
-		return boolTaxable;
+	public boolean isEarnings() {
+		return boolEarnings;
+	}
+	public boolean isTaxInterest() {
+		return boolTaxInterest;
 	}
 	public void setIsBalanceLimited(boolean boolBalLimited) {
 		this.boolLimitBalance = boolBalLimited;
@@ -126,6 +130,34 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 			e.printStackTrace();
 		}
 		
+	}
+	public double getdBalanceAtDate(LocalDate date) {
+		double dBal=0;
+		for (int i = 0; i < transactions.size(); i++) {
+			if(date.isAfter(transactions.get(i).getDate()) && date.isBefore(transactions.get(i+1).getDate())){
+				dBal=transactions.get(i).getBalance();
+			}
+		}
+
+		return dBal;
+	}
+	public void setTaxInterest(boolean b) {
+		this.boolTaxInterest = b;
+		
+	}
+
+	public void setEarnings(boolean b) {
+		this.boolEarnings = b;
+		
+	}
+
+	public void setMaximumBalance(double d) {
+		this.dbMaximumBalance = d;
+		
+	}
+
+	public double getMaximumBalance() {
+		return dbMaximumBalance;
 	}
 
 }

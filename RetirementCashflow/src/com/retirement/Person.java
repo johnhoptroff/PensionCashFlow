@@ -13,11 +13,11 @@ public class Person {
 	private Double dPensionAmnt = 0.0;
 	private Double dEmployerPenAmnt = 0.0;
 	private List<IncomeStream> streams;
-	private List<Account> accounts;
-	private Account accPensionPot;
+	private List<AccountAbstract> accounts;
+	private PensionAccount accPensionPot;
 
-	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<Account> accounts,
-			Account accPensionPot, double dEmpContribution, double dPensionAmnt) {
+	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<AccountAbstract> accounts,
+			PensionAccount accPensionPot, double dEmpContribution, double dPensionAmnt) {
 		this.strName = strName;
 		this.dateBDay = dateBDay;
 		this.streams = streams;
@@ -52,7 +52,7 @@ public class Person {
 		this.dNIableIncome = dNIableIncome;
 	}
 
-	public List<Account> getAccounts() {
+	public List<AccountAbstract> getAccounts() {
 		return this.accounts;
 
 	}
@@ -65,7 +65,7 @@ public class Person {
 		this.dTotalIncome = dTotalIncome;
 	}
 
-	public Account getPensionAccount() {
+	public PensionAccount getPensionAccount() {
 		return this.accPensionPot;
 	}
 

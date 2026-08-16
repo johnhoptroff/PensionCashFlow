@@ -10,17 +10,17 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class TestTotalEarningsMaxLump {
-	private final Account accAvivaJohn = new Account("Aviva John",85687.5, 0.03,true); // added redundo no 2024 contrs actual = £114250.0
+	private final PensionAccount accAvivaJohn = new PensionAccount("Aviva John",85687.5, 0.03); // added redundo no 2024 contrs actual = £114250.0
 	//private final Account accTransPenJohn = new Account("Transfer John",185250.0, 0.03,true); // 25% taken out transfered to Lump acc
-	private final Account accBondsJohn = new Account("Bonds John",50000.0,0.044,false);
-	private final Account accBondsLynne = new Account("Bonds Lynne",50000.0,0.044,false);
-	private final Account accRRShares = new Account("R-R shares",47993.0,0.02,false);
-	private final Account accISAs = new Account("ISAs",106172.0,0.03,false);
-	private final Account accPruLynne = new Account("Pru Lynne",12600.0,0.03,true); // no 2024 contributions
-	private final Account accFordJohn = new Account("Ford John",53137.0,0.0595,true);
-	private final Account accLumpJohn = new Account("Lump John",28562.5,0.04,true); // 25% of Aviva
-	List<Account> accountsLynne = new ArrayList<>();
-	List<Account> accountsJohn = new ArrayList<>();
+	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044);
+	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044);
+	private final SharesAccount accRRShares = new SharesAccount("R-R shares",47993.0,0.02);
+	private final ISAaccount accISAs = new ISAaccount("ISAs",106172.0,0.03);
+	private final PensionAccount accPruLynne = new PensionAccount("Pru Lynne",12600.0,0.03); // no 2024 contributions
+	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",53137.0,0.0595);
+	private final TaxedAccount accLumpJohn = new TaxedAccount("Lump John",28562.5,0.04); // 25% of Aviva
+	List<AccountAbstract> accountsLynne = new ArrayList<>();
+	List<AccountAbstract> accountsJohn = new ArrayList<>();
 	
 	private final IncomeStream streamRentJohn = new IncomeStream("RentJohn",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5700.0,0.05,true,false,false);
 	private final IncomeStream streamRentLynne = new IncomeStream("RentLynne",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),5700.0,0.05,true,false,false);
@@ -50,6 +50,7 @@ class TestTotalEarningsMaxLump {
 	private final double dbNIlowpc = 0.12;
 	private final double dbNIhighwk = 967.0;
 	private final double dbNIlowwk  = 242.0;
+	private final double dbISAlimit = 20000.0;
 	
 	
 	@Test
@@ -70,9 +71,9 @@ class TestTotalEarningsMaxLump {
 		//StreamsJohn.add(streamWorkPen4John);
 		StreamsJohn.add(streamStatePenJohn);
 		
-		accBondsLynne.setIsBalanceLimited(true);
+		accBondsLynne.setMaximumBalance(50000.0);;
 		accBondsLynne.setPayAccount(accISAs);
-		accBondsJohn.setIsBalanceLimited(true);
+		accBondsJohn.setMaximumBalance(50000.0);
 		accBondsJohn.setPayAccount(accISAs);
 
 		accountsJohn.add(accAvivaJohn);
@@ -94,7 +95,7 @@ class TestTotalEarningsMaxLump {
 		People.add(persLynne);
 		People.add(persJohn);
 
-		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc);
+		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc, dbISAlimit,LocalDate.of(2031, 4, 5) );
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
 		
 		double dBudget = 73700.0;

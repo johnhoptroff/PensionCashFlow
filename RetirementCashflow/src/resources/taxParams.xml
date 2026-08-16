@@ -6,6 +6,8 @@
             <taxHigh>50000.0</taxHigh>
             <taxLowpc>0.2</taxLowpc>
             <taxHighpc>0.4</taxHighpc>
+			<ISAlimit>20000.0</ISAlimit>
+			<ThresholdDate>2031-04-05</ThresholdDate>
         </tax>
         <ni>
             <NILowwk>242.0</NILowwk>

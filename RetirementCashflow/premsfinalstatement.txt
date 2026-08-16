@@ -1,0 +1,17 @@
+Account [Holder:John Hoptroff balance:103946.40897056837, dOpenBal=50000.0, dRate=0.05, strName=prems]
+Transactions:
+interest	2024-01-15	£52,500.00
+interest	2025-01-15	£55,125.00
+interest	2026-01-15	£57,881.25
+interest	2027-01-15	£60,775.31
+interest	2028-01-15	£63,814.08
+interest	2029-01-15	£67,004.78
+interest	2030-01-15	£70,355.02
+interest	2031-01-15	£73,872.77
+interest	2032-01-15	£77,566.41
+interest	2033-01-15	£81,444.73
+interest	2034-01-15	£85,516.97
+interest	2035-01-15	£89,792.82
+interest	2036-01-15	£94,282.46
+interest	2037-01-15	£98,996.58
+interest	2038-01-15	£103,946.41

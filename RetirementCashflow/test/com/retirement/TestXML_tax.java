@@ -10,6 +10,7 @@ class TestXML_tax {
 	File file = new File("src/resources/taxparams.xml");
 	double dLowerLimit = 12500.0;
 	double dHighPaypc = 0.02;
+	double dISAlimit = 20000.0;
 
 	@Test
 	public void whenCorrectInfoFromFile_thenSuccess() {
@@ -19,5 +20,6 @@ class TestXML_tax {
 
 		assertEquals(txPars.getTaxLow(), dLowerLimit);
 		assertEquals(niPars.getNIhighPaypc(), dHighPaypc);
+		assertEquals(txPars.getISAlimit(),dISAlimit);
 	}
 }

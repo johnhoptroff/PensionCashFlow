@@ -1,8 +1,10 @@
-package com.retirement;
+package com.retirement.panels;
 
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.retirement.AccountAbstract;
 
 public class AccountsTableModel extends AbstractTableModel {
 
@@ -45,6 +47,7 @@ public class AccountsTableModel extends AbstractTableModel {
 		} else if (columnIndex == 3) {
 			oTemp = alAccounts.get(rowIndex).isTaxInterest();
 		}
+		//TODO also need a withdrawal interest column
 		return oTemp;
 	}
 	// needed to show column name

@@ -9,17 +9,17 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class TestWithdrawFromLowInterest {
-	private final Account acc1 = new Account("acc1",50000.0,0.06,false);
-	private final Account acc2 = new Account("acc2",50000.0,0.03,false);
-	private final Account acc3 = new Account("acc3",50000.0,0.04,false);
-	private final Account acc4 = new Account("acc4",49000.0,0.01,false);
-	private final Account acc5 = new Account("acc5",50000.0,0.05,false);
-	List<Account> Accounts = new ArrayList<>();
+class TestWithdrawFromAppropriate {
+	private final TaxedAccount acc1 = new TaxedAccount("acc1",50000.0,0.06);
+	private final TaxedAccount acc2 = new TaxedAccount("acc2",50000.0,0.03);
+	private final TaxedAccount acc3 = new TaxedAccount("acc3",50000.0,0.04);
+	private final ISAaccount acc4 = new ISAaccount("acc4",49000.0,0.01);
+	private final TaxedAccount acc5 = new TaxedAccount("acc5",50000.0,0.05);
+	List<AccountAbstract> Accounts = new ArrayList<>();
 
 
 	@Test
-	void test() {
+	void testLowestInterest() {
 		Accounts.add(acc1);
 		Accounts.add(acc2);
 		Accounts.add(acc3);

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class TestGetAccBalance {
 
-    private final Account prems = new Account("prems",50000.0,0.05,false);
+    private final PremBondsAccount prems = new PremBondsAccount("prems",50000.0,0.05);
 	Person john = new Person("John Hoptroff", null, null, null, null, 0, 0);
 
     @Test
@@ -27,5 +27,19 @@ class TestGetAccBalance {
     	System.out.println(buffer);
     	prems.close(LocalDate.of(2039,1,15));
     }
-
+    
+    @Test
+    void balanceAtDate() {
+        // test balance at a certain date 
+    	prems.setHolder(john);
+    	for (LocalDate date = LocalDate.of(2024,1,15); date.isBefore(LocalDate.of(2039,1,15)); date = date.plusYears(1))
+    	{
+    		prems.addInterest(date);
+    	}
+    	assertEquals(77566.41, prems.getdBalanceAtDate(LocalDate.of(2032,4,4)),0.01);
+    	
+    	StringBuffer buffer = new StringBuffer(prems.toString());
+    	System.out.println(buffer);
+    	prems.close(LocalDate.of(2039,1,15));
+    }
 }

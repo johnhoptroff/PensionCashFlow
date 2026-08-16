@@ -22,9 +22,9 @@ public class InputDataFromFile {
 		Document doc = fact.getDoc();
 		NodeList nodesPeople = doc.getElementsByTagName("person");
 		for (int i = 0; i < nodesPeople.getLength(); i++) { // loop through each person
-			List<Account> accounts = new ArrayList<Account>();
+			List<AccountAbstract> accounts = new ArrayList<>();
 			List<IncomeStream> streams = new ArrayList<IncomeStream>();
-			Account accPen;
+			PensionAccount accPen;
 			Element eNode = (Element) nodesPeople.item(i);
 			String name = eNode.getAttribute("name");
 			String[] strDob = eNode.getAttribute("dob").split("/");
@@ -39,8 +39,9 @@ public class InputDataFromFile {
 			double dPensionAmtEmp = Double.parseDouble(strContents[2].replaceAll("\\s", ""));
 			double dPensionpot = Double.parseDouble(strContents[3].replaceAll("\\s", ""));
 			double dRate = Double.parseDouble(strContents[4].replaceAll("\\s", ""));
-			boolean boolTaxable = Boolean.parseBoolean(strContents[5].replaceAll("\\s", ""));
-			accPen = new Account(strPenName, dPensionpot, dRate, boolTaxable);
+			boolean boolWithdrawTaxable = Boolean.parseBoolean(strContents[5].replaceAll("\\s", ""));
+			boolean boolInterestTaxable = Boolean.parseBoolean(strContents[6].replaceAll("\\s", ""));
+			accPen = new PensionAccount(strPenName, dPensionpot, dRate);
 			accounts.add(accPen);
 
 			Element eElement = (Element) nodesPeople.item(i);
@@ -54,7 +55,7 @@ public class InputDataFromFile {
 					strContents = strDetails.split("\n");
 					double dBalance = Double.parseDouble(strContents[1].replaceAll("\\s", ""));
 					dRate = Double.parseDouble(strContents[2].replaceAll("\\s", ""));
-					boolTaxable = Boolean.parseBoolean(strContents[3].replaceAll("\\s", ""));
+					boolWithdrawTaxable = Boolean.parseBoolean(strContents[3].replaceAll("\\s", ""));
 
 					System.out.print("account name : ");
 					System.out.println(acc.getAttribute("name"));
@@ -62,10 +63,10 @@ public class InputDataFromFile {
 					System.out.println("account details : ");
 					System.out.println(dBalance);
 					System.out.println(dRate);
-					System.out.println(boolTaxable);
+					System.out.println(boolWithdrawTaxable);
 					
 					// add account here
-					accounts.add(new Account(acc.getAttribute("name"), dBalance, dRate, boolTaxable));
+					accounts.add(new AccountAbstract(acc.getAttribute("name"), dBalance, dRate));
 				}
 			}
 			NodeList streamList = eElement.getElementsByTagName("stream");
@@ -82,7 +83,7 @@ public class InputDataFromFile {
 					LocalDate dateEnd = LocalDate.of(Integer.parseInt(strDateEnd[2]),Integer.parseInt(strDateEnd[1]),Integer.parseInt(strDateEnd[0]));
 					double dStipend = Double.parseDouble(strContents[3].replaceAll("\\s", ""));
 					dRate = Double.parseDouble(strContents[4].replaceAll("\\s", ""));
-					boolTaxable = Boolean.parseBoolean(strContents[5].replaceAll("\\s", ""));
+					boolWithdrawTaxable = Boolean.parseBoolean(strContents[5].replaceAll("\\s", ""));
 					boolean boolNIable = Boolean.parseBoolean(strContents[6].replaceAll("\\s", ""));
 					boolean boolIsEmployment = Boolean.parseBoolean(strContents[7].replaceAll("\\s", ""));
 
@@ -94,11 +95,11 @@ public class InputDataFromFile {
 					System.out.println(dateEnd);
 					System.out.println(dStipend);
 					System.out.println(dRate);
-					System.out.println(boolTaxable);
+					System.out.println(boolWithdrawTaxable);
 					System.out.println(boolNIable);
 					System.out.println(boolIsEmployment);
 					// add stream here
-					streams.add(new IncomeStream(stream.getAttribute("name"), dateStart, dateEnd, dStipend, dRate, boolTaxable, boolNIable, boolIsEmployment));
+					streams.add(new IncomeStream(stream.getAttribute("name"), dateStart, dateEnd, dStipend, dRate, boolWithdrawTaxable, boolNIable, boolIsEmployment));
 				}
 			}
 			Person person = new Person(name, dateDOB, streams, accounts, accPen, dPensionAmt, dPensionAmtEmp);

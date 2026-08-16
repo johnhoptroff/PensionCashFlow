@@ -1,29 +1,27 @@
-package com.retirement;
+package com.retirement.panels;
 
 import java.util.ArrayList;
 
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-public class AccountsTableModel extends AbstractTableModel {
+import com.retirement.IncomeStream;
 
+public class StreamsTableModel extends AbstractTableModel {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String[] strColNames = { "Name", "Opening Bal", "Rate", "Taxable?" };
-	private ArrayList<AccountAbstract> alAccounts;
-
-	public AccountsTableModel() { // default constructor to show an empty table
-		alAccounts = new ArrayList<AccountAbstract>();
-	}
+	private String[] strColNames = { "Name", "Start Date", "End Date", "Earning", "Rate" };
+	private ArrayList<IncomeStream> alStreams;
 
 	@Override
 	public int getRowCount() {
 		int iSize;
-		if (alAccounts == null) {
+		if (alStreams == null) {
 			iSize = 0;
 		} else {
-			iSize = alAccounts.size();
+			iSize = alStreams.size();
 		}
 		return iSize;
 	}
@@ -37,16 +35,19 @@ public class AccountsTableModel extends AbstractTableModel {
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Object oTemp = null;
 		if (columnIndex == 0) {
-			oTemp = alAccounts.get(rowIndex).getName();
+			oTemp = alStreams.get(rowIndex).getName();
 		} else if (columnIndex == 1) {
-			oTemp = alAccounts.get(rowIndex).getdOpenBal();
+			oTemp = alStreams.get(rowIndex).getdateStart();
 		} else if (columnIndex == 2) {
-			oTemp = alAccounts.get(rowIndex).getdRate();
+			oTemp = alStreams.get(rowIndex).getEndDate();
 		} else if (columnIndex == 3) {
-			oTemp = alAccounts.get(rowIndex).isTaxInterest();
+			oTemp = alStreams.get(rowIndex).getdStipend();
+		} else if (columnIndex == 4) {
+			oTemp = alStreams.get(rowIndex).getRate();
 		}
 		return oTemp;
 	}
+
 	// needed to show column name
 	public String getColumnName(int col) {
 		return strColNames[col];

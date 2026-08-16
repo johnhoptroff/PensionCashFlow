@@ -32,7 +32,11 @@ private NIParams niPars;
 		double dTaxHighAmt = Double.parseDouble(strContents[2].replaceAll("\\s", ""));
 		double dTaxLowpc = Double.parseDouble(strContents[3].replaceAll("\\s", ""));
 		double dTaxHighpc = Double.parseDouble(strContents[4].replaceAll("\\s", ""));
-		this.txPars = new TaxParams(dTaxLowamt, dTaxHighAmt, dTaxLowpc, dTaxHighpc);
+		double dISAlimit = Double.parseDouble(strContents[5].replaceAll("\\s", ""));
+		String[] strThreshold = strContents[6].replaceAll("\\s", "").split("-");
+		LocalDate dtFrozenTh  = LocalDate.of(Integer.parseInt(strThreshold[0]), Integer.parseInt(strThreshold[1]),
+				Integer.parseInt(strThreshold[2])); 
+		this.txPars = new TaxParams(dTaxLowamt, dTaxHighAmt, dTaxLowpc, dTaxHighpc,dISAlimit,dtFrozenTh);
 		
 		NodeList nlNIParams = eNode.getElementsByTagName("ni");
 		Element eNIInfo = (Element) nlNIParams.item(0);
