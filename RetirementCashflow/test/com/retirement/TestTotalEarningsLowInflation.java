@@ -17,7 +17,7 @@ class TestTotalEarningsLowInflation {
 	private final TaxedAccount accFordLynne = new TaxedAccount("Pru_LH_notax",7504.0,0.025);
 	
 	private final PremBondsAccount accPremBonds = new PremBondsAccount("Premium_Bonds",100000.0,0.039);
-	private final SharesAccount accRRShares = new SharesAccount("R-R+shares",40000.0,0.02);
+	private final AccountShares accRRShares = new AccountShares("R-R+shares",40000.0,0.02,6311.0,995);
 	private final ISAaccount accISAs = new ISAaccount("ISAs",263700.0,0.035); // includes £100k tax free part of mum's bonds
 	private final TaxedAccount accFordJohn = new TaxedAccount("Flex_accounts",219550.0,0.035); 
 

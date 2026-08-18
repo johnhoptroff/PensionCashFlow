@@ -1,0 +1,16 @@
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=100000.0, dRate=0.036, strName=PremBonds]
+Transactions:
+interest	2027-01-01	£103,600.00
+interest	2028-01-01	£107,329.60
+interest	2029-01-01	£111,193.47
+withdrawal	2030-12-31	£92,198.94
+interest	2030-01-01	£95,518.10
+withdrawal	2031-12-31	£85,341.50
+interest	2031-01-01	£88,413.79
+withdrawal	2032-12-31	£62,220.58
+interest	2032-01-01	£64,460.53
+withdrawal	2033-12-31	£34,770.74
+interest	2033-01-01	£36,022.49
+withdrawal	2034-12-31	£4,694.20
+interest	2034-01-01	£4,863.19
+withdrawal	2035-12-31	£0.00

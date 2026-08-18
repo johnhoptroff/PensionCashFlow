@@ -241,13 +241,14 @@ public class CashFlow {
 			double dTaxed = TaxNI.calcTax(person.getTaxableIncome(), txParams);
 			double dNId = TaxNI.calcNI(person.getNIableIncome(), niParams);
 			dTotalNetIncome = dTotalNetIncome + person.getdTotalIncome() - (dTaxed + dNId);
+
 			
-			// System.out.print(person + "Tax paid:" +
-			// NumberFormat.getCurrencyInstance().format(dTaxed));
-			// System.out.print(" NI paid:" +
-			// NumberFormat.getCurrencyInstance().format(dNId));
-			// System.out.println(" Total stops:" +
-			// NumberFormat.getCurrencyInstance().format(dTaxed + dNId));
+			//TODO need to delete addTotal and use the function in Person() to get gross stream earnings
+			// then add in any extra from pensions and bonds to get to HTR threshold if possible
+			// need to simulate a tax return ArrayList in Person() for each tax year and then read off tax for the relevant year
+			
+			
+			
 		});
 		sbOut.append("---Total Net income:" + NumberFormat.getCurrencyInstance().format(dTotalNetIncome));
 		if(people.get(0).getdTotalIncome() > txParams.getTaxHigh())sbOut.append("---HIGH TAX!!" + people.get(0).getStrName()) ;
@@ -263,7 +264,7 @@ public class CashFlow {
 
 	private void addTotal(IncomeStream stream) { // forward looking for the whole year
 		double dStipend = stream.getdStipend();
-		double dProportion = DateLogic.calcProportion(stream.getdateStart(), stream.getEndDate(), dateInstantaneous);
+		double dProportion = DateLogic.calcPropInCalYear(stream.getdateStart(), stream.getEndDate(), dateInstantaneous);
 		double dEarning = dStipend * dProportion;
 		double dTaxable = this.personInstantaneous.getTaxableIncome();
 		double dNIable = this.personInstantaneous.getNIableIncome();

@@ -14,7 +14,7 @@ class TestTotalEarningsMaxLump {
 	//private final Account accTransPenJohn = new Account("Transfer John",185250.0, 0.03,true); // 25% taken out transfered to Lump acc
 	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044);
 	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044);
-	private final SharesAccount accRRShares = new SharesAccount("R-R shares",47993.0,0.02);
+	private final AccountShares accRRShares = new AccountShares("R-R+shares",40000.0,0.02,6311.0,995);
 	private final ISAaccount accISAs = new ISAaccount("ISAs",106172.0,0.03);
 	private final PensionAccount accPruLynne = new PensionAccount("Pru Lynne",12600.0,0.03); // no 2024 contributions
 	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",53137.0,0.0595);

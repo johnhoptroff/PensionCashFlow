@@ -14,7 +14,7 @@ class TestTotalEarningsBuyHouseSavingsAsStreams {
 	double dInflation = 0.036;
 	
 	//private final Account accPremBonds = new Account("Premium_Bonds",100000.0,0.039,false,false);
-	private final SharesAccount accRRShares = new SharesAccount("R-R+shares",40000.0,0.02);
+	private final AccountShares accRRShares = new AccountShares("R-R+shares",40000.0,0.02,6311.0,995);
 	private final ISAaccount accISAs = new ISAaccount("ISAs",163700.0,0.04);
 	//private final Account accFordJohn = new Account("Flex_accounts",219550.0,0.035,false,true); 
 

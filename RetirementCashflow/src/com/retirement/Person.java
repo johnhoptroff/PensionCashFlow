@@ -98,12 +98,47 @@ public class Person {
 
 	public void setPensionAmnt(double dPensAmnt) {
 		this.dPensionAmnt = dPensAmnt;
-		
+
 	}
 
 	public void setEmployerPenAmnt(double dEmployerAmnt) {
 		this.dEmployerPenAmnt = dEmployerAmnt;
-		
+
+	}
+
+	public double getTaxYearStreamsTotal(LocalDate dtTxYrStart) {
+		this.setNIableIncome(0.0);
+		setTaxableIncome(0.0);
+		setdTotalIncome(0.0);
+		this.streams.forEach((stream) -> addTotal(stream, dtTxYrStart));
+		return this.dTotalIncome;
+	}
+
+	private void addTotal(IncomeStream stream, LocalDate dtTxYrStart) {
+		double dStipend = stream.getdStipend();
+
+		// proportion of stream within the tax year
+		double dPropn = DateLogic.calcPropInTaxYear(stream.getdateStart(), stream.getEndDate(), dtTxYrStart);
+		double dEarning = dStipend* dPropn;
+
+		if (stream.isTaxable()) {
+			dTaxableIncome = dTaxableIncome + dEarning;
+		}
+		if (stream.isLiableNI()) {
+			dNIableIncome = dNIableIncome + dEarning;
+		}
+		if (stream.isEmployment()) {
+			double dPensAmnt = getPensionAmnt() * dPropn;
+			double dEmployerAmnt = getEmployerAmnt() * dPropn;
+
+			dTaxableIncome = dTaxableIncome - dPensAmnt;
+			this.accPensionPot.deposit((dEmployerAmnt + dPensAmnt), dtTxYrStart);
+			dEarning = dEarning - dPensAmnt;
+		}
+
+		double dCummulitive = this.getdTotalIncome() + dEarning;
+		this.setdTotalIncome(dCummulitive);
+
 	}
 
 }
