@@ -15,9 +15,10 @@ public class CashFlow {
 	private LocalDate dateStart;
 	private double dTotalNetIncome;
 	private LocalDate dateInstantaneous;
-	private Person personInstantaneous;
+	//private Person personInstantaneous;
 	private TaxParams txParams;
 	private NIParams niParams;
+	private SuplimentalTaxParams suppParams;
 	private List<Person> people;
 	private StringBuffer sbOut = new StringBuffer();
 	private StringBuffer sbBalances = new StringBuffer();
@@ -26,7 +27,7 @@ public class CashFlow {
 
 	@SuppressWarnings("unchecked")
 	public CashFlow(List<Person> people, double dBudget, double dInflation, LocalDate dateStart, TaxParams txParams,
-			NIParams niParams) {
+			NIParams niParams, SuplimentalTaxParams supParams) {
 		this.people = people;
 		this.dBudget = dBudget;
 		this.dInflation = dInflation;
@@ -232,12 +233,62 @@ public class CashFlow {
 		// streams.forEach((stream) -> addTotal(stream));
 
 		people.forEach((person) -> {
-			this.personInstantaneous = person;
+			//this.personInstantaneous = person;
 			// income amounts need to be initialised to stop calculating cumulative amounts
 			person.setNIableIncome(0.0);
 			person.setTaxableIncome(0.0);
 			person.setdTotalIncome(0.0);
-			person.getStreams().forEach((stream) -> addTotal(stream));
+			// get all income from Employment and DB Pensions
+			double StreamsAmt = person.getTaxYearStreamsTotal(dateInstantaneous);
+			// add in income from interest and dividends from accounts
+			double dbIntDiv = person.getTotaltaxedInterestDiv(dateInstantaneous);
+
+			// calculate leeway (gap) up to higher tax threshold
+			double dLeeway = txParams.getTaxHigh() - (StreamsAmt + dbIntDiv);
+			// get additional income from bonds and pensions that are taxed to fill gap if possible
+			
+			//TODO only the bond CHAREGEABLE GAIN counts as income!!
+			
+			//  bonds first
+			double bondsAmt = 0.0;
+			if(person.isBond()) { //TODO could make this a list of bonds
+				double dBondBal = person.getAccBond().getdBalance();
+				if(dBondBal >= dLeeway){
+					person.getAccBond().withdrawBond(dLeeway,dateInstantaneous); // this generates charge is appropriate in BondAccount
+					person.setBondIncome(person.getBondIncome() + dLeeway);
+					bondsAmt = bondsAmt + dLeeway;
+					dLeeway = 0.0;
+				}else {
+					person.getAccBond().withdrawBond(dBondBal,dateInstantaneous);
+					person.setBondIncome(person.getBondIncome() + dBondBal);
+					dLeeway = dLeeway - dBondBal;
+					bondsAmt = bondsAmt + dBondBal;
+				}
+				person.addChargeableEvent(person.getAccBond().getCharge());	
+			}
+			// then pensions
+			double dSIPPamnt = 0.0;
+			if(person.isSIPP()) {
+				double dSIPPbal = person.getAccSIPP().getdBalance();
+				if(dSIPPbal >= dLeeway){
+					person.getAccSIPP().withdraw(dLeeway,dateInstantaneous); 
+					person.setPensionIncome(person.getTaxableIncome() + dLeeway);
+					dSIPPamnt = dSIPPamnt + dLeeway;
+					dLeeway = 0.0;
+				}else {
+					person.getAccBond().withdraw(dSIPPbal,dateInstantaneous);
+					person.setPensionIncome(person.getTaxableIncome() + dSIPPbal);
+					dSIPPamnt = dSIPPamnt + dSIPPbal;
+				}
+					
+			}
+			// create person's tax form and calculate stoppages
+			TaxForm taxForm = person.getTaxForm();
+			double dStoppages = TaxNI.calcStoppages(taxForm,txParams,niParams,suppParams);
+			// calculate total net income for person
+			
+
+			//person.getStreams().forEach((stream) -> addTotal(stream));
 			double dTaxed = TaxNI.calcTax(person.getTaxableIncome(), txParams);
 			double dNId = TaxNI.calcNI(person.getNIableIncome(), niParams);
 			dTotalNetIncome = dTotalNetIncome + person.getdTotalIncome() - (dTaxed + dNId);
@@ -259,51 +310,6 @@ public class CashFlow {
 		// NumberFormat.getCurrencyInstance().format(dBudget));
 		// System.out.println(" gap: " +
 		// NumberFormat.getCurrencyInstance().format(dBudget - dTotalNetIncome));
-
-	}
-
-	private void addTotal(IncomeStream stream) { // forward looking for the whole year
-		double dStipend = stream.getdStipend();
-		double dProportion = DateLogic.calcPropInCalYear(stream.getdateStart(), stream.getEndDate(), dateInstantaneous);
-		double dEarning = dStipend * dProportion;
-		double dTaxable = this.personInstantaneous.getTaxableIncome();
-		double dNIable = this.personInstantaneous.getNIableIncome();
-
-		if (stream.isTaxable()) {
-			dTaxable = dTaxable + dEarning;
-			this.personInstantaneous.setTaxableIncome(dTaxable);
-		}
-		if (stream.isLiableNI()) {
-			dNIable = dNIable + dEarning;
-			this.personInstantaneous.setNIableIncome(dNIable);
-		}
-		if (stream.isEmployment()) {
-			double dPensAmnt = personInstantaneous.getPensionAmnt() * dProportion;
-			double dEmployerAmnt = personInstantaneous.getEmployerAmnt() * dProportion;
-			personInstantaneous.setPensionAmnt(dPensAmnt);
-			personInstantaneous.setEmployerPenAmnt(dEmployerAmnt);
-			dTaxable = dTaxable - dPensAmnt;
-			PensionAccount account = personInstantaneous.getPensionAccount();
-			account.deposit((dEmployerAmnt + dPensAmnt), dateInstantaneous);
-			this.personInstantaneous.setTaxableIncome(dTaxable);
-			dEarning = dEarning - dPensAmnt;
-		}
-		double dCummulitive = this.personInstantaneous.getdTotalIncome() + dEarning;
-		this.personInstantaneous.setdTotalIncome(dCummulitive);
-		/*
-		 * 
-		 * System.out.print(stream.getName() + "\t" + stream.getdateStart() + "\t" +
-		 * stream.getEndDate() + "\t" + " stipend:" +
-		 * NumberFormat.getCurrencyInstance().format(dStipend) + "\t");
-		 * System.out.print(" Taxable :" +
-		 * NumberFormat.getCurrencyInstance().format(dTaxable) + "\t");
-		 * System.out.print(" NIable  :" +
-		 * NumberFormat.getCurrencyInstance().format(dNIable) + "\t");
-		 * System.out.print(" Earnings:" +
-		 * NumberFormat.getCurrencyInstance().format(dCummulitive) + "\t");
-		 * System.out.print("Proportion:"); System.out.printf("%.3f%n", dProportion);
-		 * 
-		 */
 
 	}
 

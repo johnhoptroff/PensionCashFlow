@@ -19,7 +19,7 @@ class TestSetEarningstoLevel {
 	
 	private final PensionAccount accSJPJohn = new PensionAccount("Aviva John",85687.5, 0.09);
 	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044);
-	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995);
+	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995, 0.06);
 	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",31707.98,0.0595);
 	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,0.03);
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -31,7 +31,7 @@ class TestSetEarningstoLevel {
 	private final IncomeStream streamStatePenLynne = new IncomeStream("StateLynne",LocalDate.of(2035,11,14),LocalDate.of(2100,1,1),12014.0,0.05,true,false,false);
 	
 	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044);
-	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300);
+	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300,0.06);
 	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,0.03);
 	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne",40000.0,0.05,LocalDate.of(2028,11,14));
 	

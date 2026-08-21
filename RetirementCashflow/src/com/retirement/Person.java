@@ -8,6 +8,11 @@ public class Person {
 	private String strName;
 	private LocalDate dateBDay;
 	private Double dTaxableIncome = 0.0;
+	private Double dRentalIncome = 0.0;
+	private Double dBondIncome = 0.0;
+	private Double dChargeable = 0.0;
+	private Double dInterest = 0.0;
+	private Double dDividend = 0.0;
 	private Double dNIableIncome = 0.0;
 	private Double dTotalIncome = 0.0;
 	private Double dPensionAmnt = 0.0;
@@ -15,6 +20,19 @@ public class Person {
 	private List<IncomeStream> streams;
 	private List<AccountAbstract> accounts;
 	private PensionAccount accPensionPot;
+	private boolean boolHaveBond;
+	private boolean boolHaveSIPP;
+	private boolean boolHaveShares;
+	private BondAccount accBond;
+	private PensionAccount accSIPP;
+	private TaxForm taxform;
+	private AccountShares accShares;
+
+	/*
+	 * private double dTaxableIncome; private double dInterest; private double
+	 * dDividend; private double dBondIncome; private double dSharesGain; private
+	 * double dChargeable;
+	 */
 
 	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<AccountAbstract> accounts,
 			PensionAccount accPensionPot, double dEmpContribution, double dPensionAmnt) {
@@ -25,6 +43,20 @@ public class Person {
 		this.accPensionPot = accPensionPot;
 		this.dEmployerPenAmnt = dEmpContribution;
 		this.dPensionAmnt = dPensionAmnt;
+		accounts.forEach(account -> {
+			if (account instanceof BondAccount) {
+				this.boolHaveBond = true;
+				this.accBond = (BondAccount) account;
+			}
+			if (account instanceof PensionAccount) {
+				this.boolHaveSIPP = true;
+				this.accSIPP = (PensionAccount) account;
+			}
+			if (account instanceof AccountShares) {
+				this.boolHaveShares = true;
+				this.accShares = (AccountShares) account;
+			}
+		});
 
 	}
 
@@ -110,16 +142,16 @@ public class Person {
 		this.setNIableIncome(0.0);
 		setTaxableIncome(0.0);
 		setdTotalIncome(0.0);
-		this.streams.forEach((stream) -> addTotal(stream, dtTxYrStart));
+		this.streams.forEach((stream) -> addTotalfromStream(stream, dtTxYrStart));
 		return this.dTotalIncome;
 	}
 
-	private void addTotal(IncomeStream stream, LocalDate dtTxYrStart) {
+	private void addTotalfromStream(IncomeStream stream, LocalDate dtTxYrStart) {
 		double dStipend = stream.getdStipend();
 
 		// proportion of stream within the tax year
 		double dPropn = DateLogic.calcPropInTaxYear(stream.getdateStart(), stream.getEndDate(), dtTxYrStart);
-		double dEarning = dStipend* dPropn;
+		double dEarning = dStipend * dPropn;
 
 		if (stream.isTaxable()) {
 			dTaxableIncome = dTaxableIncome + dEarning;
@@ -139,6 +171,73 @@ public class Person {
 		double dCummulitive = this.getdTotalIncome() + dEarning;
 		this.setdTotalIncome(dCummulitive);
 
+	}
+
+	public double getTotaltaxedInterestDiv(LocalDate date) {
+
+		accounts.forEach((account) -> addTotalfromAccount(account, date));
+		return 0;
+	}
+
+	private void addTotalfromAccount(AccountAbstract account, LocalDate dtTxYrStart) {
+		TaxedAccount taxed;
+		AccountShares shares;
+		if (account instanceof TaxedAccount) {
+			taxed = (TaxedAccount) account;
+			this.dInterest = this.dInterest + taxed.getInterest();
+		}
+
+		if (account instanceof AccountShares) {
+			shares = (AccountShares) account;
+			this.dDividend = this.dDividend + shares.getdDividend();
+		}
+
+	}
+
+	public boolean isBond() {
+		return this.boolHaveBond;
+	}
+
+	public BondAccount getAccBond() {
+		return accBond;
+	}
+
+	public boolean isSIPP() {
+		return boolHaveSIPP;
+	}
+
+	public PensionAccount getAccSIPP() {
+		return accSIPP;
+	}
+
+	public void addChargeableEvent(double charge) {
+		this.dChargeable = charge;
+
+	}
+
+	public double getBondIncome() {
+		return this.dBondIncome;
+	}
+
+	public void setBondIncome(double d) {
+		this.dBondIncome = d;
+	}
+
+	private TaxForm getTaxform() {
+		return taxform;
+	}
+
+	public TaxForm getTaxForm() {
+		double dSharesGain =0.0;
+		if(this.boolHaveShares) {
+			dSharesGain = accShares.getdGain();
+		}
+		this.taxform = new TaxForm(dTaxableIncome, dRentalIncome, dInterest, dDividend, dBondIncome, dSharesGain, dChargeable);
+		return this.getTaxform();
+	}
+
+	public void setPensionIncome(double d) {
+		this.dRentalIncome = d;
 	}
 
 }

@@ -12,39 +12,34 @@ import org.junit.jupiter.api.Test;
 class TestTotalEarningsDONOTBuyHouseSavingsAsStreams {
 	//accounts setup as of 1/1/2025
 	double dInflation = 0.036;
-	
-	private final ISAaccount accISAs = new ISAaccount("ISAs",195977.0,0.045);
-	private final TaxedAccount accSavingsTaxed = new TaxedAccount("Taxed",197240.0,0.0375);
-	private final PremBondsAccount accSavingsNSI = new PremBondsAccount("PremBonds",100000.0,0.036); 
 
 	List<AccountAbstract> accountsLynne = new ArrayList<>();
 	List<AccountAbstract> accountsJohn = new ArrayList<>();
 	
-	private final IncomeStream streamRentJohn = new IncomeStream("RentJohn",LocalDate.of(2022,5,1),LocalDate.of(2037,1,1),4900.0,(dInflation-0.01),true,false,false);
-	private final IncomeStream streamRentLynne = new IncomeStream("RentLynne",LocalDate.of(2022,5,1),LocalDate.of(2037,1,1),4900.0,(dInflation-0.01),true,false,false);
-	private final IncomeStream streamBungalowFundJohn = new IncomeStream("BungJohn",LocalDate.of(2037,1,1),LocalDate.of(2057,1,1),6000.0,dInflation,false,false,false);
-	private final IncomeStream streamBungalowFundLynne = new IncomeStream("BungLynne",LocalDate.of(2037,1,1),LocalDate.of(2057,1,1),6000.0,dInflation,false,false,false);
-	private final IncomeStream streamRRsharesLynne = new IncomeStream("RRL-Lynne",LocalDate.of(2026,6,12),LocalDate.of(2032,6,12),4290.0,0.0,false,false,false);
-	private final IncomeStream streamRRsharesJohn = new IncomeStream("RRL-John",LocalDate.of(2026,6,12),LocalDate.of(2029,6,12),5300.0,0.0,false,false,false);
-	
+	private final IncomeStream streamRentJohn = new IncomeStream("RentJohn",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),4900.0,0.026,true,false,false);
 	private final IncomeStream streamWorkPen1John = new IncomeStream("*RRPension 1",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),12025.8,0.02,true,false,false);
-	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),5186.04,0.025,true,false,false);
-	private final IncomeStream streamWorkPen3John = new IncomeStream("*RRPension 3",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),6498.60,dInflation,true,false,false);
+	private final IncomeStream streamWorkPen3John = new IncomeStream("*RRPension 3",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),5186.04,0.025,true,false,false);
+	private final IncomeStream streamWorkPen2John = new IncomeStream("*RRPension 2",LocalDate.of(2024,6,1),LocalDate.of(2100,1,1),6498.6,0.036,true,false,false);
 	private final IncomeStream streamWorkPen4John = new IncomeStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),10759.08,0.025,true,false,false);
-	private final IncomeStream streamWorkPen5John = new IncomeStream("*Aviva Pen 5",LocalDate.of(2026,1,1),LocalDate.of(2035,4,23),11000.0,0.0,true,false,false);
-	private final IncomeStream streamWorkPen6John = new IncomeStream("*Aviva Pen 6",LocalDate.of(2035,4,24),LocalDate.of(2038,4,23),7940.52,0.0,true,false,false);
+	private final IncomeStream streamStatePenJohn = new IncomeStream("StateJohn",LocalDate.of(2035,4,23),LocalDate.of(2100,1,1),12014.0,0.05,true,false,false);
 	
-	private final IncomeStream streamLGPSPenLynne = new IncomeStream("LGPSPension",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),11398.19,dInflation,true,false,false);
-	private final IncomeStream streamBankPenLynne = new IncomeStream("* BankPen  *",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),7657.2,dInflation,true,false,false);
-	private final IncomeStream streamPruPenLynne = new IncomeStream("* PruPenL  *",LocalDate.of(2027,11,14),LocalDate.of(2031,11,14),11551.5,dInflation,false,false,false);
+	private final PensionAccount accSJPJohn = new PensionAccount("Aviva John",85687.5, 0.09);
+	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044);
+	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995,0.06);
+	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",31707.98,0.0595);
+	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,0.03);
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	private final IncomeStream streamSalaryLynne = new IncomeStream("GSA-Lynne",LocalDate.of(2005,5,1),LocalDate.of(2026,6,1),44824.56,0.03,true,false,false);
+	private final IncomeStream streamRentLynne = new IncomeStream("RentLynne",LocalDate.of(2022,5,1),LocalDate.of(2100,1,1),4900.0,0.026,true,false,false);
+	private final IncomeStream streamDiviLynne = new IncomeStream("DiviLynne",LocalDate.of(2026,1,1),LocalDate.of(2100,1,1),150.0,0.015,true,false,false);
+	private final IncomeStream streamLGPSPenLynne = new IncomeStream("LGPSPension",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),11398.19,0.04,true,false,false);
+	private final IncomeStream streamBankPenLynne = new IncomeStream("* BankPen  *",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),7657.2,0.04,true,false,false);
+	private final IncomeStream streamStatePenLynne = new IncomeStream("StateLynne",LocalDate.of(2035,11,14),LocalDate.of(2100,1,1),12014.0,0.05,true,false,false);
 	
-	private final IncomeStream streamBondOnLynne = new IncomeStream("* BondOn  *",LocalDate.of(2027,1,1),LocalDate.of(2029,11,13),27800.0,dInflation,false,false,false);
-	private final IncomeStream streamBondOffshore = new IncomeStream("* BondOff1  *",LocalDate.of(2027,1,1),LocalDate.of(2031,1,1),7600.0,dInflation,false,false,false);
-	private final IncomeStream streamBondOffshore2 = new IncomeStream("* BondOff2  *",LocalDate.of(2031,1,1),LocalDate.of(2047,1,1),2000.0,dInflation,true,false,false);
-	
-	private final IncomeStream streamStatePenJohn = new IncomeStream("StateJohn",LocalDate.of(2035,4,23),LocalDate.of(2100,1,1),12014.0,dInflation,true,false,false);
-	private final IncomeStream streamStatePenLynne = new IncomeStream("StateLynne",LocalDate.of(2035,11,14),LocalDate.of(2100,1,1),12014.0,dInflation,true,false,false);
-	private final IncomeStream streamSalLynne = new IncomeStream("SalaryLynne",LocalDate.of(1986,6,9),LocalDate.of(2026,5,14),39000.0,(dInflation-0.01),true,true,true);
+	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044);
+	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300,0.06);
+	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,0.03);
+	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne",40000.0,0.05,LocalDate.of(2028,11,14));
 	List<IncomeStream> StreamsJohn = new ArrayList<>();
 	List<IncomeStream> StreamsLynne = new ArrayList<>();
 	
@@ -61,37 +56,36 @@ class TestTotalEarningsDONOTBuyHouseSavingsAsStreams {
 	private final double dbISAlimit = 20000.0;
 	private final LocalDate dtFrozenTh = LocalDate.of(2031, 04, 05);
 	
+	
+	
 	@Test
 	void test() {
         // test total earnings to age 90
 
-		StreamsLynne.add(streamSalLynne);
-		StreamsLynne.add(streamRentLynne);
-		StreamsLynne.add(streamLGPSPenLynne);
-		StreamsLynne.add(streamBankPenLynne);
-		StreamsLynne.add(streamStatePenLynne);
-		StreamsLynne.add(streamPruPenLynne);
-		StreamsLynne.add(streamBondOnLynne);
-		StreamsLynne.add(streamBungalowFundLynne);
-		StreamsLynne.add(streamRRsharesLynne);
-		
 		StreamsJohn.add(streamRentJohn);
 		StreamsJohn.add(streamWorkPen1John);
 		StreamsJohn.add(streamWorkPen2John);
 		StreamsJohn.add(streamWorkPen3John);
 		StreamsJohn.add(streamWorkPen4John);
-		StreamsJohn.add(streamWorkPen5John);
-		StreamsJohn.add(streamWorkPen6John);
 		StreamsJohn.add(streamStatePenJohn);
-		StreamsJohn.add(streamBungalowFundJohn);
-		StreamsJohn.add(streamRRsharesJohn);
-		StreamsJohn.add(streamBondOffshore);
-		StreamsLynne.add(streamBondOffshore2);
-
-		accountsJohn.add(accSavingsNSI);
 		
-		accountsLynne.add(accISAs);
-		accountsLynne.add(accSavingsTaxed);
+		accountsJohn.add(accSJPJohn);
+		accountsJohn.add(accBondsJohn);
+		accountsJohn.add(accFordJohn);
+		accountsJohn.add(accRRSharesJohn);
+		accountsJohn.add(accISAJohn);
+		
+		StreamsLynne.add(streamSalaryLynne);
+		StreamsLynne.add(streamRentLynne);
+		StreamsLynne.add(streamDiviLynne);
+		StreamsLynne.add(streamLGPSPenLynne);
+		StreamsLynne.add(streamBankPenLynne);
+		StreamsLynne.add(streamStatePenLynne);
+
+		accountsLynne.add(accBondsLynne);
+		accountsLynne.add(accISALynne);
+		accountsLynne.add(accPruLynne);
+		accountsLynne.add(accRRSharesLynne);
 		
 		
 		PensionAccount pen = new PensionAccount("nopension",0.0,0.0);
@@ -105,10 +99,11 @@ class TestTotalEarningsDONOTBuyHouseSavingsAsStreams {
 
 		TaxParams txParams = new TaxParams(dbTaxlow,dbTaxhigh,dbTaxlowpc,dbTaxhighpc,dbISAlimit,dtFrozenTh);
 		NIParams niParams = new NIParams(dbNIhighpc,dbNIlowpc,dbNIhighwk,dbNIlowwk);
+		SuplimentalTaxParams supParams = new SuplimentalTaxParams(3000.0,1000.0, 500.0, 500.0, 0.0, 0.18, 0.24);
 		
 		double dBudget = 84750.0;
 		
-		CashFlow cashFlow = new CashFlow(People,dBudget,dInflation,LocalDate.of(2027,1,1),txParams,niParams);
+		CashFlow cashFlow = new CashFlow(People,dBudget,dInflation,LocalDate.of(2027,1,1),txParams,niParams,supParams);
 		System.out.println("starting test...");
 		try {
 			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058,12,31)),0.1);

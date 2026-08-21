@@ -10,4 +10,9 @@ public class TaxedAccount extends AccountAbstract {
 		super.setEarnings(false);
 	}
 
+	public Double getInterest() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
