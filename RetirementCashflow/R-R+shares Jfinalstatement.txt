@@ -1,0 +1,10 @@
+Account [Holder:John Hoptroff balance:1972.5220544457316, dOpenBal=13266.39, dRate=0.02, strName=R-R+shares J]
+Transactions:
+interest	2027-01-01	£13,531.72
+interest	2028-01-01	£13,802.35
+interest	2029-01-01	£14,078.40
+interest	2030-01-01	£14,359.97
+interest	2031-01-01	£14,647.17
+interest	2032-01-01	£14,940.11
+interest	2033-01-01	£15,238.91
+withdrawal	2034-12-31	£1,972.52

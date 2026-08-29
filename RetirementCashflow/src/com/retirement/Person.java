@@ -2,6 +2,7 @@ package com.retirement;
 
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Person {
@@ -9,32 +10,26 @@ public class Person {
 	private LocalDate dateBDay;
 	private Double dTaxableIncome = 0.0;
 	private Double dRentalIncome = 0.0;
-	private Double dBondIncome = 0.0;
-	private Double dChargeable = 0.0;
+	private Double dBondOffIncome = 0.0;
+	private Double dBondOnIncome = 0.0;
 	private Double dInterest = 0.0;
 	private Double dDividend = 0.0;
 	private Double dNIableIncome = 0.0;
 	private Double dTotalIncome = 0.0;
 	private Double dPensionAmnt = 0.0;
 	private Double dEmployerPenAmnt = 0.0;
-	private List<IncomeStream> streams;
+	private List<StreamAbstract> streams;
 	private List<AccountAbstract> accounts;
 	private PensionAccount accPensionPot;
 	private boolean boolHaveBond;
 	private boolean boolHaveSIPP;
 	private boolean boolHaveShares;
-	private BondAccount accBond;
 	private PensionAccount accSIPP;
 	private TaxForm taxform;
 	private AccountShares accShares;
 
-	/*
-	 * private double dTaxableIncome; private double dInterest; private double
-	 * dDividend; private double dBondIncome; private double dSharesGain; private
-	 * double dChargeable;
-	 */
 
-	public Person(String strName, LocalDate dateBDay, List<IncomeStream> streams, List<AccountAbstract> accounts,
+	public Person(String strName, LocalDate dateBDay, List<StreamAbstract> streams, List<AccountAbstract> accounts,
 			PensionAccount accPensionPot, double dEmpContribution, double dPensionAmnt) {
 		this.strName = strName;
 		this.dateBDay = dateBDay;
@@ -46,7 +41,6 @@ public class Person {
 		accounts.forEach(account -> {
 			if (account instanceof BondAccount) {
 				this.boolHaveBond = true;
-				this.accBond = (BondAccount) account;
 			}
 			if (account instanceof PensionAccount) {
 				this.boolHaveSIPP = true;
@@ -101,7 +95,7 @@ public class Person {
 		return this.accPensionPot;
 	}
 
-	public List<IncomeStream> getStreams() {
+	public List<StreamAbstract> getStreams() {
 		return this.streams;
 
 	}
@@ -138,68 +132,28 @@ public class Person {
 
 	}
 
-	public double getTaxYearStreamsTotal(LocalDate dtTxYrStart) {
-		this.setNIableIncome(0.0);
-		setTaxableIncome(0.0);
-		setdTotalIncome(0.0);
-		this.streams.forEach((stream) -> addTotalfromStream(stream, dtTxYrStart));
-		return this.dTotalIncome;
+	public void setYearTotaltaxedInterestDiv(LocalDate date) {
+		accounts.forEach((account) -> addTotalfromSavDiv(account, date));
 	}
 
-	private void addTotalfromStream(IncomeStream stream, LocalDate dtTxYrStart) {
-		double dStipend = stream.getdStipend();
 
-		// proportion of stream within the tax year
-		double dPropn = DateLogic.calcPropInTaxYear(stream.getdateStart(), stream.getEndDate(), dtTxYrStart);
-		double dEarning = dStipend * dPropn;
 
-		if (stream.isTaxable()) {
-			dTaxableIncome = dTaxableIncome + dEarning;
-		}
-		if (stream.isLiableNI()) {
-			dNIableIncome = dNIableIncome + dEarning;
-		}
-		if (stream.isEmployment()) {
-			double dPensAmnt = getPensionAmnt() * dPropn;
-			double dEmployerAmnt = getEmployerAmnt() * dPropn;
-
-			dTaxableIncome = dTaxableIncome - dPensAmnt;
-			this.accPensionPot.deposit((dEmployerAmnt + dPensAmnt), dtTxYrStart);
-			dEarning = dEarning - dPensAmnt;
-		}
-
-		double dCummulitive = this.getdTotalIncome() + dEarning;
-		this.setdTotalIncome(dCummulitive);
-
-	}
-
-	public double getTotaltaxedInterestDiv(LocalDate date) {
-
-		accounts.forEach((account) -> addTotalfromAccount(account, date));
-		return 0;
-	}
-
-	private void addTotalfromAccount(AccountAbstract account, LocalDate dtTxYrStart) {
+	private void addTotalfromSavDiv(AccountAbstract account, LocalDate dtTxYrStart) {
 		TaxedAccount taxed;
 		AccountShares shares;
+		if (account instanceof AccountShares) {
+			shares = (AccountShares) account;
+			this.dDividend = this.dDividend + shares.getdDividend(dtTxYrStart);
+		}
 		if (account instanceof TaxedAccount) {
 			taxed = (TaxedAccount) account;
 			this.dInterest = this.dInterest + taxed.getInterest();
-		}
-
-		if (account instanceof AccountShares) {
-			shares = (AccountShares) account;
-			this.dDividend = this.dDividend + shares.getdDividend();
 		}
 
 	}
 
 	public boolean isBond() {
 		return this.boolHaveBond;
-	}
-
-	public BondAccount getAccBond() {
-		return accBond;
 	}
 
 	public boolean isSIPP() {
@@ -210,34 +164,99 @@ public class Person {
 		return accSIPP;
 	}
 
-	public void addChargeableEvent(double charge) {
-		this.dChargeable = charge;
+	public void addChargeEventOn(double charge) {
+		this.dBondOnIncome = charge;
 
 	}
+	public void addChargeEventOff(double charge) {
+		this.dBondOffIncome = charge;
 
+	}
 	public double getBondIncome() {
-		return this.dBondIncome;
+		return this.dBondOffIncome;
 	}
 
 	public void setBondIncome(double d) {
-		this.dBondIncome = d;
+		this.dBondOffIncome = d;
 	}
 
-	private TaxForm getTaxform() {
-		return taxform;
-	}
 
-	public TaxForm getTaxForm() {
-		double dSharesGain =0.0;
-		if(this.boolHaveShares) {
+	public TaxForm getTaxForm(LocalDate txYearStart) {
+		double dSharesGain = 0.0;
+		dTaxableIncome = 0.0;
+		dRentalIncome = 0.0;
+		streams.forEach(stream -> {
+			// proportion of stream within the tax year
+			double dPropn = DateLogic.calcPropInTaxYear(stream.getdateStart(), stream.getEndDate(), txYearStart);
+			double dStipend = stream.getdStipend(txYearStart)* dPropn;
+			int iYears = Math.max(0, txYearStart.getYear()-stream.getdateStart().getYear());
+			double dInflation = Math.pow(1+stream.getRate(), iYears+1.0);
+			// calculate taxable income from streams
+			if (stream instanceof EmploymentStream || stream instanceof PensionStream) {
+				dTaxableIncome += dStipend*dPropn*dInflation;
+			}
+			// calculate rental income from streams
+			if (stream instanceof RentalStream) {
+				dRentalIncome += dStipend*dPropn*dInflation;
+			}		
+		});
+		accounts.forEach(account -> {
+			// calculate interest from accounts
+			dInterest = 0.0;
+			dDividend = 0.0;
+			dBondOffIncome = 0.0;
+			dBondOnIncome = 0.0;
+			if (account instanceof TaxedAccount) {
+				dInterest += account.getdBalance()*((TaxedAccount) account).getInterest();	
+			}
+			// calculate dividend from shares account
+			if (account instanceof AccountShares) {
+				dDividend += ((AccountShares)account).getdDividend(txYearStart);	
+			}
+			// calculate off-shore bond gain
+			if (account instanceof AccOffBond) {
+				dBondOffIncome += ((AccOffBond)account).getCharge(txYearStart);
+			}
+			// calculate on-shore bond gain
+			if (account instanceof AccOnBond) {
+				dBondOnIncome += ((AccOnBond)account).getCharge(txYearStart);
+			}
+		});
+		// calculate shares gain
+		if (this.boolHaveShares) {
 			dSharesGain = accShares.getdGain();
 		}
-		this.taxform = new TaxForm(dTaxableIncome, dRentalIncome, dInterest, dDividend, dBondIncome, dSharesGain, dChargeable);
-		return this.getTaxform();
+
+		this.taxform = new TaxForm(dTaxableIncome, dRentalIncome, dInterest, dDividend, dSharesGain, dBondOffIncome,
+				dBondOnIncome);
+		return this.taxform;
 	}
 
 	public void setPensionIncome(double d) {
 		this.dRentalIncome = d;
 	}
+
+	public double getInterest() {
+		return this.dInterest;
+	}
+	public double getDividend() {
+		return this.dDividend;
+	}
+
+	public ArrayList<BondAccount> getBonds() {
+		ArrayList<BondAccount> bonds = new ArrayList<BondAccount>();
+		accounts.forEach(account -> {
+			if (account instanceof BondAccount) {
+				bonds.add((BondAccount)account);
+			}
+		});
+	return bonds;
+	}
+
+	public double getNetIncome(LocalDate date) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 }

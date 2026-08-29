@@ -1,0 +1,8 @@
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=105842.96, dRate=0.03, strName=OffshoreJohn]
+Transactions:
+interest	2027-01-01	£109,018.25
+interest	2028-01-01	£112,288.80
+interest	2029-01-01	£115,657.46
+withdrawal	2030-12-31	£54,629.68
+interest	2030-01-01	£56,268.57
+withdrawal	2031-12-31	£0.00

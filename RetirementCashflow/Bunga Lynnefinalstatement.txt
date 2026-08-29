@@ -1,0 +1,9 @@
+Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=120000.0, dRate=0.0375, strName=Bunga Lynne]
+Transactions:
+interest	2027-01-01	£124,500.00
+interest	2028-01-01	£129,168.75
+interest	2029-01-01	£134,012.58
+interest	2030-01-01	£139,038.05
+withdrawal	2031-12-31	£45,064.92
+interest	2031-01-01	£46,754.85
+withdrawal	2032-12-31	£0.00

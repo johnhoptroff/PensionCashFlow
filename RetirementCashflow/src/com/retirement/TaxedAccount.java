@@ -11,8 +11,7 @@ public class TaxedAccount extends AccountAbstract {
 	}
 
 	public Double getInterest() {
-		// TODO Auto-generated method stub
-		return null;
+		return super.getdBalance()*super.getdRate();
 	}
 
 }

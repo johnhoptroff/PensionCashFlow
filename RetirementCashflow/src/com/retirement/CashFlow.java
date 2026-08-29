@@ -13,7 +13,7 @@ public class CashFlow {
 	private double dBudget;
 	private double dInflation;
 	private LocalDate dateStart;
-	private double dTotalNetIncome;
+	//private double dTotalNetIncome;
 	private LocalDate dateInstantaneous;
 	//private Person personInstantaneous;
 	private TaxParams txParams;
@@ -53,19 +53,26 @@ public class CashFlow {
 			sbBalances.append(NumberFormat.getCurrencyInstance().format(account.getdBalance()) + "\t");
 
 		});
+		this.suppParams = supParams;
 		
 	}
 
 	private void rationaliseAccounts(double dGap) throws Exception {
+		int iLoop = 1;
 		while (dGap != 0) {
 			// if(dNetWorth <=0.0)throw new Exception("funds depleted!");
 			if (dGap <= 0) {
 				// shows a surplus so choose best account to add into based on the best rate
 				Collections.sort(accounts);
-				AccountAbstract acc = accounts.get(accounts.size() - 1); // the account paying the most interest
-				acc.deposit(-dGap, dateInstantaneous);
-				//System.out.println(acc);
-				dGap = 0;
+				AccountAbstract acc = accounts.get(accounts.size() - iLoop); // the account paying the most interest
+				double dChange = acc.deposit(-dGap, dateInstantaneous);
+				//TODO this will be ISA account in which case there should be change if deposit not allowed
+				//TODO this could be reaching the ISA limit, reaching the prem bonds limit or trying to deposit to an 
+				//TODO embargoed account not yet active
+				
+				dGap = dGap - dChange;
+				//still negative gap. adding 1 to the loop sets the account to the next best to deposit to.
+				iLoop ++;
 			} else {
 				// choose best account to take from based on the worst rate
 				Collections.sort(accounts);
@@ -137,8 +144,7 @@ public class CashFlow {
 			dateInstantaneous = date; // sets the dateInstantaneous field for other functions
 			calcNetWorth(false);
 			Collections.sort(accounts); // sort on interest rate so the lowest rate account is used
-			calcTotalNetIncome();
-			double dGap = dBudget - dTotalNetIncome; // NB this is still at dateStart for the 1st iteration
+			double dGap = dBudget - calcTotalNetIncome(date); // NB this is still at dateStart for the 1st iteration
 			
 			// set date to the end of the year before rationalising accounts
 			dateInstantaneous = LocalDate.of(date.getYear(),12,31);
@@ -161,7 +167,7 @@ public class CashFlow {
 			dateInstantaneous = date;
 			Collections.sort(accounts);
 			calcNetWorth(true);
-			calcTotalNetIncome();
+			double dTotalNetIncome = calcTotalNetIncome(date);
 			sbOut.append(":Years Net Income:" + NumberFormat.getCurrencyInstance().format(dTotalNetIncome));
 			double dGap = dNetWorth / (dateEnd.getYear() - dateInstantaneous.getYear());
 
@@ -190,11 +196,7 @@ public class CashFlow {
 		accounts.forEach((account) -> {
 			account.addInterest(date);
 		});
-		people.forEach((person) -> {
-			person.getStreams().forEach((stream) -> {
-				stream.inflate();
-			});
-		});
+		// streams are automatically inflated at rate in constructor
 		if(date.isAfter(txParams.getFrozenTh())) {
 			txParams.inflateParams(dInflation);
 			niParams.inflateParams(dInflation);
@@ -224,9 +226,55 @@ public class CashFlow {
 		this.dInflation = dInflation;
 	}
 
-	private void calcTotalNetIncome() {
+	private void rationaliseAccountImproved(Person person,double dLeeway) {
+		// calculate leeway (gap) up to higher tax threshold
+		//double dLeeway = txParams.getTaxHigh() - (StreamsAmt + dbInt + dbDivi);
+		// get additional income from bonds and pensions that are taxed to fill gap if possible
+		
+		//TODO needs a lot of work to calculate the best order for withdrawal.  
+		//initial tests suggest better to withdraw first from taxed accounts, then pensions then bonds.
+		// could experiment with order once program is running.
+		
+		//  bonds first
+		ArrayList<BondAccount> bonds = person.getBonds();
+		double bondsAmt = 0.0;
+		bonds.forEach(bond -> {
+			double dBondBal = bond.getdBalance();
+			if(dBondBal >= dLeeway){
+				bond.withdrawBond(dLeeway,dateInstantaneous); // this generates any charge as appropriate in BondAccount
+				person.setBondIncome(person.getBondIncome() + dLeeway);
+				//bondsAmt = bondsAmt + dLeeway;
+
+			}else {
+				bond.withdrawBond(dBondBal,dateInstantaneous);
+				person.setBondIncome(person.getBondIncome() + dBondBal);
+				//bondsAmt = bondsAmt + dBondBal;
+			}
+			person.addChargeEventOn(bond.getCharge(LocalDate.of(0, 0, 0)));	
+		
+		});
+		
+
+
+		// then pensions
+		double dSIPPamnt = 0.0;
+		if(person.isSIPP()) {
+			double dSIPPbal = person.getAccSIPP().getdBalance();
+			if(dSIPPbal >= dLeeway){
+				person.getAccSIPP().withdraw(dLeeway,dateInstantaneous); 
+				person.setPensionIncome(person.getTaxableIncome() + dLeeway);
+				dSIPPamnt = dSIPPamnt + dLeeway;
+			}else {
+				person.getAccSIPP().withdraw(dSIPPbal,dateInstantaneous);
+				person.setPensionIncome(person.getTaxableIncome() + dSIPPbal);
+				dSIPPamnt = dSIPPamnt + dSIPPbal;
+			}
+				
+		}
+	}
+	private double calcTotalNetIncome(LocalDate txYearEnd) {
 		// need everyone's taxable income, then the net income, then add up
-		this.dTotalNetIncome = 0.0;
+		double dTotalNetIncome = 0.0;
 		sbOut.append("\n ----Running calc for date:" + dateInstantaneous);
 		sbOut.append(":Budget:" + NumberFormat.getCurrencyInstance().format(dBudget));
 		// loop through all streams to add the total earnings for each person
@@ -239,67 +287,17 @@ public class CashFlow {
 			person.setTaxableIncome(0.0);
 			person.setdTotalIncome(0.0);
 			// get all income from Employment and DB Pensions
-			double StreamsAmt = person.getTaxYearStreamsTotal(dateInstantaneous);
 			// add in income from interest and dividends from accounts
-			double dbIntDiv = person.getTotaltaxedInterestDiv(dateInstantaneous);
+			person.setYearTotaltaxedInterestDiv(dateInstantaneous);
+			double dbInt = person.getInterest();
+			double dbDivi = person.getDividend();
 
-			// calculate leeway (gap) up to higher tax threshold
-			double dLeeway = txParams.getTaxHigh() - (StreamsAmt + dbIntDiv);
-			// get additional income from bonds and pensions that are taxed to fill gap if possible
-			
-			//TODO only the bond CHAREGEABLE GAIN counts as income!!
-			
-			//  bonds first
-			double bondsAmt = 0.0;
-			if(person.isBond()) { //TODO could make this a list of bonds
-				double dBondBal = person.getAccBond().getdBalance();
-				if(dBondBal >= dLeeway){
-					person.getAccBond().withdrawBond(dLeeway,dateInstantaneous); // this generates charge is appropriate in BondAccount
-					person.setBondIncome(person.getBondIncome() + dLeeway);
-					bondsAmt = bondsAmt + dLeeway;
-					dLeeway = 0.0;
-				}else {
-					person.getAccBond().withdrawBond(dBondBal,dateInstantaneous);
-					person.setBondIncome(person.getBondIncome() + dBondBal);
-					dLeeway = dLeeway - dBondBal;
-					bondsAmt = bondsAmt + dBondBal;
-				}
-				person.addChargeableEvent(person.getAccBond().getCharge());	
-			}
-			// then pensions
-			double dSIPPamnt = 0.0;
-			if(person.isSIPP()) {
-				double dSIPPbal = person.getAccSIPP().getdBalance();
-				if(dSIPPbal >= dLeeway){
-					person.getAccSIPP().withdraw(dLeeway,dateInstantaneous); 
-					person.setPensionIncome(person.getTaxableIncome() + dLeeway);
-					dSIPPamnt = dSIPPamnt + dLeeway;
-					dLeeway = 0.0;
-				}else {
-					person.getAccBond().withdraw(dSIPPbal,dateInstantaneous);
-					person.setPensionIncome(person.getTaxableIncome() + dSIPPbal);
-					dSIPPamnt = dSIPPamnt + dSIPPbal;
-				}
-					
-			}
 			// create person's tax form and calculate stoppages
-			TaxForm taxForm = person.getTaxForm();
-			double dStoppages = TaxNI.calcStoppages(taxForm,txParams,niParams,suppParams);
+			TaxForm taxForm = person.getTaxForm(txYearEnd);
+			double dIncomeTax = TaxNI.calcIncomeTax(taxForm,txParams,niParams,suppParams);
 			// calculate total net income for person
-			
-
-			//person.getStreams().forEach((stream) -> addTotal(stream));
-			double dTaxed = TaxNI.calcTax(person.getTaxableIncome(), txParams);
 			double dNId = TaxNI.calcNI(person.getNIableIncome(), niParams);
-			dTotalNetIncome = dTotalNetIncome + person.getdTotalIncome() - (dTaxed + dNId);
-
-			
-			//TODO need to delete addTotal and use the function in Person() to get gross stream earnings
-			// then add in any extra from pensions and bonds to get to HTR threshold if possible
-			// need to simulate a tax return ArrayList in Person() for each tax year and then read off tax for the relevant year
-			
-			
-			
+			dTotalNetIncome = dTotalNetIncome + person.getdTotalIncome() - (dIncomeTax + dNId);
 		});
 		sbOut.append("---Total Net income:" + NumberFormat.getCurrencyInstance().format(dTotalNetIncome));
 		if(people.get(0).getdTotalIncome() > txParams.getTaxHigh())sbOut.append("---HIGH TAX!!" + people.get(0).getStrName()) ;
@@ -310,7 +308,7 @@ public class CashFlow {
 		// NumberFormat.getCurrencyInstance().format(dBudget));
 		// System.out.println(" gap: " +
 		// NumberFormat.getCurrencyInstance().format(dBudget - dTotalNetIncome));
-
+		return dTotalNetIncome;
 	}
 
 }

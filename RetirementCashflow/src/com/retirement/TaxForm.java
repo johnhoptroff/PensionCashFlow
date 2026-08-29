@@ -6,19 +6,19 @@ public class TaxForm {
 	private double dRentalIncome;
 	private double dInterest;
 	private double dDividend;
-	private double dBondEarnings;
 	private double dSharesGain;
-	private double dBondChargeable;
+	private double dBondChargeOff;
+	private double dBondChargeOn;
 	
-	public TaxForm(double dTaxableEarnings, double dRentalIncome, double dInterest, double dDividend, double dBondEarnings,
-			double dSharesGain, double dBondChargeable) {
+	public TaxForm(double dTaxableEarnings, double dRentalIncome, double dInterest, double dDividend,
+			double dSharesGain, double dBondChargeOff, double dBondChargeOn) {
 		this.dTaxableEarnings = dTaxableEarnings;
 		this.dRentalIncome = dRentalIncome;
 		this.dInterest = dInterest;
 		this.dDividend = dDividend;
-		this.dBondEarnings = dBondEarnings;
 		this.dSharesGain = dSharesGain;
-		this.dBondChargeable = dBondChargeable;
+		this.dBondChargeOff = dBondChargeOff;
+		this.dBondChargeOn = dBondChargeOn;
 	}
 
 	public double getdTaxableEarnings() {
@@ -35,25 +35,21 @@ public class TaxForm {
 	}
 
 
-	public double getdBondEarnings() {
-		return dBondEarnings;
-	}
-
-
 	public double getdSharesGain() {
 		return dSharesGain;
 	}
 
 
-	public double getdBondChargeable() {
-		return dBondChargeable;
+	public double getdBondChargeOff() {
+		return dBondChargeOff;
 	}
 
 	public double getRentalIncome() {
 		return this.dRentalIncome;
 	}
-	
-	
-	
+
+	public double getdBondChargeOn() {
+		return this.dBondChargeOn;
+	}
 	
 }

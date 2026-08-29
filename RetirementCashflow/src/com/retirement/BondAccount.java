@@ -47,8 +47,9 @@ public class BondAccount extends AccountAbstract {
 			this.dCummulativeGain = this.dCummulativeGain + dGain;
 	}
 
-	public double getCharge() {
+	public double getCharge(LocalDate txYearStart) {
 		return this.dChareable;
 	}
+
 
 }

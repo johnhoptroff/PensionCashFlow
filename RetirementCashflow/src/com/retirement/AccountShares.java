@@ -41,7 +41,7 @@ public class AccountShares extends AccountAbstract {
 		return dSharePrice;
 	}
 
-	public double getdDividend() {
+	public double getdDividend(LocalDate txYearStart) {
 		return dDividend;
 	}
 

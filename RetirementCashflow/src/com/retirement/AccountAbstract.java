@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.retirement.fileutils.FileIO;
 
-public class AccountAbstract implements Comparable<AccountAbstract>{
+public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 	private double dBalance;
 	private double dOpenBal;
 	private LocalDate dateClosed;
@@ -29,9 +29,10 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 		this.setdRate(dRate);
 	}
 
-	public void deposit(double dMoney,LocalDate dateIn) {
+	public double deposit(double dMoney,LocalDate dateIn) {
 		this.dBalance = this.dBalance + dMoney;
 		transactions.add(new Transaction("deposit",dMoney,dateIn,dBalance));
+		return 0.0;
 	}
 
 	public void withdraw(double dMoney,LocalDate dateOut) {
@@ -100,7 +101,23 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 
 	@Override
 	public int compareTo(AccountAbstract accOther) {
-		return Double.compare(getdRate(), accOther.getdRate());
+		int result = Double.compare(getdRate(), accOther.getdRate());
+		if(this instanceof ISAaccount && !(accOther instanceof ISAaccount)) {
+			return 1;
+		}
+		if(this instanceof ISAaccount && (accOther instanceof BondAccount)) {
+			return 1;
+		}
+		if(this instanceof AccountShares && !(accOther instanceof ISAaccount)) {
+			return 1;
+		}
+		if(this instanceof TaxedAccount && !(accOther instanceof TaxedAccount)) {
+			return -1;
+		}
+		if(this instanceof PremBondsAccount && (accOther instanceof TaxedAccount)) {
+			return 1;
+		}
+		return result;
 	}
 
 	public String getName() {
@@ -158,6 +175,10 @@ public class AccountAbstract implements Comparable<AccountAbstract>{
 
 	public double getMaximumBalance() {
 		return dbMaximumBalance;
+	}
+
+	public Object getTransactions() {
+		return this.transactions;
 	}
 
 }

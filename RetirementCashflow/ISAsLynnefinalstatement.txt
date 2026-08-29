@@ -1,0 +1,7 @@
+Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=106172.0, dRate=0.03, strName=ISAsLynne]
+Transactions:
+withdrawal	2027-12-31	£101,735.76
+interest	2027-01-01	£104,787.83
+withdrawal	2028-12-31	£15,304.24
+interest	2028-01-01	£15,763.37
+withdrawal	2029-12-31	£0.00

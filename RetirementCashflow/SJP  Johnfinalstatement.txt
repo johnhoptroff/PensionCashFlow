@@ -1,0 +1,11 @@
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=115000.0, dRate=0.09, strName=SJP  John]
+Transactions:
+interest	2027-01-01	£125,350.00
+interest	2028-01-01	£136,631.50
+interest	2029-01-01	£148,928.33
+interest	2030-01-01	£162,331.89
+interest	2031-01-01	£176,941.75
+interest	2032-01-01	£192,866.51
+withdrawal	2033-12-31	£129,480.61
+interest	2033-01-01	£141,133.86
+withdrawal	2034-12-31	£0.00

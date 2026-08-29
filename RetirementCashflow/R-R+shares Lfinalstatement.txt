@@ -1,0 +1,5 @@
+Account [Holder:Lynne Hoptroff balance:1008.4922719999995, dOpenBal=24962.68, dRate=0.02, strName=R-R+shares L]
+Transactions:
+interest	2027-01-01	£25,461.93
+interest	2028-01-01	£25,971.17
+withdrawal	2029-12-31	£1,008.49

@@ -1,5 +1,3 @@
 Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=50000.0, dRate=0.044, strName=Bonds Lynne]
 Transactions:
-withdrawal	2033-12-31	3252.0491138651487
-interest	2033-01-01	3395.139274875215
-withdrawal	2034-12-31	0.0
+withdrawal	2027-12-31	£0.00

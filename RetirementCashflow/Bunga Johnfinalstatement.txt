@@ -1,0 +1,10 @@
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=120000.0, dRate=0.0375, strName=Bunga John]
+Transactions:
+interest	2027-01-01	£124,500.00
+interest	2028-01-01	£129,168.75
+interest	2029-01-01	£134,012.58
+interest	2030-01-01	£139,038.05
+interest	2031-01-01	£144,251.98
+withdrawal	2032-12-31	£28,851.76
+interest	2032-01-01	£29,933.70
+withdrawal	2033-12-31	£0.00

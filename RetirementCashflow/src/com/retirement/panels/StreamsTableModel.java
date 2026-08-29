@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
-import com.retirement.IncomeStream;
+import com.retirement.StreamAbstract;
 
 public class StreamsTableModel extends AbstractTableModel {
 	/**
@@ -13,7 +13,7 @@ public class StreamsTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private String[] strColNames = { "Name", "Start Date", "End Date", "Earning", "Rate" };
-	private ArrayList<IncomeStream> alStreams;
+	private ArrayList<StreamAbstract> alStreams;
 
 	@Override
 	public int getRowCount() {
@@ -41,7 +41,7 @@ public class StreamsTableModel extends AbstractTableModel {
 		} else if (columnIndex == 2) {
 			oTemp = alStreams.get(rowIndex).getEndDate();
 		} else if (columnIndex == 3) {
-			oTemp = alStreams.get(rowIndex).getdStipend();
+			oTemp = alStreams.get(rowIndex).getdStipend(alStreams.get(rowIndex).getdateStart());
 		} else if (columnIndex == 4) {
 			oTemp = alStreams.get(rowIndex).getRate();
 		}

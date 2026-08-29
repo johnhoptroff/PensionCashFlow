@@ -23,7 +23,7 @@ public class InputDataFromFile {
 		NodeList nodesPeople = doc.getElementsByTagName("person");
 		for (int i = 0; i < nodesPeople.getLength(); i++) { // loop through each person
 			List<AccountAbstract> accounts = new ArrayList<>();
-			List<IncomeStream> streams = new ArrayList<IncomeStream>();
+			List<StreamAbstract> streams = new ArrayList<StreamAbstract>();
 			PensionAccount accPen;
 			Element eNode = (Element) nodesPeople.item(i);
 			String name = eNode.getAttribute("name");
@@ -66,7 +66,7 @@ public class InputDataFromFile {
 					System.out.println(boolWithdrawTaxable);
 					
 					// add account here
-					accounts.add(new AccountAbstract(acc.getAttribute("name"), dBalance, dRate));
+					accounts.add(new TaxedAccount(acc.getAttribute("name"), dBalance, dRate));
 				}
 			}
 			NodeList streamList = eElement.getElementsByTagName("stream");
@@ -99,7 +99,7 @@ public class InputDataFromFile {
 					System.out.println(boolNIable);
 					System.out.println(boolIsEmployment);
 					// add stream here
-					streams.add(new IncomeStream(stream.getAttribute("name"), dateStart, dateEnd, dStipend, dRate, boolWithdrawTaxable, boolNIable, boolIsEmployment));
+					streams.add(new EmploymentStream(stream.getAttribute("name"), dateStart, dateEnd, dStipend, dRate));
 				}
 			}
 			Person person = new Person(name, dateDOB, streams, accounts, accPen, dPensionAmt, dPensionAmtEmp);
