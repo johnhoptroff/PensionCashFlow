@@ -51,5 +51,24 @@ public class TaxForm {
 	public double getdBondChargeOn() {
 		return this.dBondChargeOn;
 	}
+
+	public void setInterest(double d) {
+		this.dInterest = d;
+		
+	}
+
+	public void setPension(double d) {
+		this.dTaxableEarnings += d;
+		
+	}
+
+	public void setBondsCharge(BondAccount acc, double d) {
+		if(acc instanceof AccOffBond) {
+			this.dBondChargeOff = d;
+		}else {
+			this.dBondChargeOn = d;
+		}
+		
+	}
 	
 }

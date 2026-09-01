@@ -1,3 +1,18 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=31707.98, dRate=0.0595, strName=Ford John]
+Account [Holder:John Hoptroff balance:31000.0, dOpenBal=31000.0, dRate=0.0, strName=Ford John]
 Transactions:
-withdrawal	2027-12-31	£0.00
+withdrawal	2027-04-05	-£20,000.00	£11,000.00
+interest	2027-04-05	£0.00	£11,000.00
+deposit	2028-04-05	£29,000.00	£29,000.00
+interest	2028-04-05	£0.00	£29,000.00
+withdrawal	2029-04-05	-£20,000.00	£9,000.00
+interest	2029-04-05	£0.00	£9,000.00
+deposit	2030-04-05	£31,000.00	£31,000.00
+interest	2030-04-05	£0.00	£31,000.00
+withdrawal	2031-04-05	-£20,000.00	£11,000.00
+interest	2031-04-05	£0.00	£11,000.00
+deposit	2032-04-05	£29,000.00	£29,000.00
+interest	2032-04-05	£0.00	£29,000.00
+withdrawal	2033-04-05	-£20,000.00	£9,000.00
+interest	2033-04-05	£0.00	£9,000.00
+deposit	2034-04-05	£31,000.00	£31,000.00
+interest	2034-04-05	£0.00	£31,000.00

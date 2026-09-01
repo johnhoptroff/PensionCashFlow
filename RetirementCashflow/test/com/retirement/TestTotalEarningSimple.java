@@ -9,22 +9,19 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class TestPersonTaxMultipleBonds {
+class TestTotalEarningSimple {
 	// accounts setup as of 1/1/2025
-	double dInflation = 0.036;
+	double dInflation = 0.00;
 
 	List<AccountAbstract> accountsLynne = new ArrayList<>();
 	List<AccountAbstract> accountsJohn = new ArrayList<>();
-
-	private final PensionStream streamPension = new PensionStream("Pension", LocalDate.of(2022, 5, 1),
-			LocalDate.of(2100, 1, 1), 10000.0, 0.026);
-
-	private final AccOffBond accBondOff = new AccOffBond("Bonds Offshore", 50000.0, 0.044,LocalDate.of(2015, 1, 1));
-	private final AccOnBond accBondOn = new AccOnBond("Bonds Onshore", 50000.0, 0.044,LocalDate.of(2015, 1, 1));
-	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John", 40000.0, 0.1);
-	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares", 10000.0, 0.02, 6311.0, 995, 1.0);
-
 	List<StreamAbstract> StreamsJohn = new ArrayList<>();
+	List<StreamAbstract> StreamsLynne = new ArrayList<>();
+	
+	private final PensionStream streamWorkPen1John = new PensionStream("*RRPension 1", LocalDate.of(2027, 1, 1),LocalDate.of(2100, 1, 1), 0.0, 0.03);
+
+	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John", 10000, 0.0);
+
 
 	private final double dbTaxlow = 12570.0;
 	private final double dbTaxhigh = 50270.0;
@@ -53,15 +50,15 @@ class TestPersonTaxMultipleBonds {
 
 	@Test
 	void test() {
-		// test set-up is as per Canada life example 1
+		// test total earnings to age 90
 
-		StreamsJohn.add(streamPension);
 
-		accountsJohn.add(accBondOn);
-		accountsJohn.add(accBondOff);
+		StreamsJohn.add(streamWorkPen1John);
+
+
 		accountsJohn.add(accFordJohn);
-		accountsJohn.add(accRRSharesJohn);
 
+		
 		PensionAccount pen = new PensionAccount("nopension", 0.0, 0.0);
 		Person persJohn = new Person("John Hoptroff", LocalDate.of(1968, 4, 23), StreamsJohn, accountsJohn, pen, 0.0,
 				0.0);
@@ -76,13 +73,13 @@ class TestPersonTaxMultipleBonds {
 				dLowTaxCGTrate, dHighTaxGCTrate, dSRSB, dPSAlow, dPSAhigh, dRentAllowance, dDiviAllowance, dDiviRateLow,
 				dDiviRateHigh);
 
-		double dBudget = 84750.0;
+		double dBudget = 312.5;
 
 		CashFlow cashFlow = new CashFlow(People, dBudget, dInflation, LocalDate.of(2027, 1, 1), txParams, niParams,
 				supParams);
 		System.out.println("starting test...");
 		try {
-			assertEquals(-5307.13, cashFlow.getResidual(LocalDate.of(2058, 12, 31)), 0.1);
+			assertEquals(0.0, cashFlow.getResidual(LocalDate.of(2058, 12, 31)), 0.1);
 			// cashFlow.runMaxEarnings(LocalDate.of(2059,12,31));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

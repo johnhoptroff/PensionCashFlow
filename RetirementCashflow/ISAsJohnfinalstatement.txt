@@ -1,12 +1,18 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=105842.96, dRate=0.03, strName=ISAsJohn]
+Account [Holder:John Hoptroff balance:265000.0, dOpenBal=105000.0, dRate=0.0, strName=ISAsJohn]
 Transactions:
-interest	2027-01-01	£109,018.25
-interest	2028-01-01	£112,288.80
-interest	2029-01-01	£115,657.46
-interest	2030-01-01	£119,127.18
-interest	2031-01-01	£122,701.00
-interest	2032-01-01	£126,382.03
-interest	2033-01-01	£130,173.49
-withdrawal	2034-12-31	£85,180.86
-interest	2034-01-01	£87,736.29
-withdrawal	2035-12-31	£0.00
+deposit	2027-04-05	£20,000.00	£125,000.00
+interest	2027-04-05	£0.00	£125,000.00
+deposit	2028-04-05	£20,000.00	£145,000.00
+interest	2028-04-05	£0.00	£145,000.00
+deposit	2029-04-05	£20,000.00	£165,000.00
+interest	2029-04-05	£0.00	£165,000.00
+deposit	2030-04-05	£20,000.00	£185,000.00
+interest	2030-04-05	£0.00	£185,000.00
+deposit	2031-04-05	£20,000.00	£205,000.00
+interest	2031-04-05	£0.00	£205,000.00
+deposit	2032-04-05	£20,000.00	£225,000.00
+interest	2032-04-05	£0.00	£225,000.00
+deposit	2033-04-05	£20,000.00	£245,000.00
+interest	2033-04-05	£0.00	£245,000.00
+deposit	2034-04-05	£20,000.00	£265,000.00
+interest	2034-04-05	£0.00	£265,000.00

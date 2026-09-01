@@ -12,16 +12,7 @@ import org.junit.jupiter.api.Test;
 class TestTotalEarningsBuyHouse {
 	// accounts setup as of 1/1/2025
 	double dInflation = 0.036;
-	private final PensionAccount accAvivaJohn = new PensionAccount("Aviva_John", 104250.0, 0.05);
-	private final PensionAccount accPruLynne = new PensionAccount("Pru_Lynne", 22512.0, 0.05);
-	private final ISAaccount accLumpJohn = new ISAaccount("Av_JH_notax", 34750.0, 0.05);
-	private final ISAaccount accFordLynne = new ISAaccount("Pru_LH_notax", 7504.0, 0.05);
 
-	// private final Account accPremBonds = new
-	// Account("Premium_Bonds",100000.0,0.039,false,false);
-	private final AccountShares accRRShares = new AccountShares("R-R+shares", 40000.0, 0.02, 6311.0, 995, 0.06);
-	private final ISAaccount accISAs = new ISAaccount("ISAs", 263700.0, 0.04); // includes £100k tax free part of mum's
-																				// bonds
 	// private final Account accFordJohn = new
 	// Account("Flex_accounts",219550.0,0.035,false,true);
 
@@ -71,6 +62,24 @@ class TestTotalEarningsBuyHouse {
 	private final double dDiviRateLow = 0.0875;
 	private final double dDiviRateHigh = 0.033;
 
+	TaxParams txParams = new TaxParams(dbTaxlow, dbTaxhigh, dbTaxlowpc, dbTaxhighpc, dbISAlimit,
+			LocalDate.of(2031, 4, 5));
+	NIParams niParams = new NIParams(dbNIhighpc, dbNIlowpc, dbNIhighwk, dbNIlowwk);
+	SuplimentalTaxParams supParams = new SuplimentalTaxParams(dbCGTLimit, dbLowTaxDiviLimit, dbHighTaxDiviLimit,
+			dLowTaxCGTrate, dHighTaxGCTrate, dSRSB, dPSAlow, dPSAhigh, dRentAllowance, dDiviAllowance, dDiviRateLow,
+			dDiviRateHigh);
+	
+	private final PensionAccount accAvivaJohn = new PensionAccount("Aviva_John", 104250.0, 0.05);
+	private final PensionAccount accPruLynne = new PensionAccount("Pru_Lynne", 22512.0, 0.05);
+	private final ISAaccount accLumpJohn = new ISAaccount("Av_JH_notax", 34750.0, 0.05,txParams.getISAlimit());
+	private final ISAaccount accFordLynne = new ISAaccount("Pru_LH_notax", 7504.0, 0.05,txParams.getISAlimit());
+
+	// private final Account accPremBonds = new
+	// Account("Premium_Bonds",100000.0,0.039,false,false);
+	private final AccountShares accRRShares = new AccountShares("R-R+shares", 40000.0, 0.02, 6311.0, 995, 0.06);
+	private final ISAaccount accISAs = new ISAaccount("ISAs", 263700.0, 0.04,txParams.getISAlimit()); // includes £100k tax free part of mum's
+																				// bonds
+	
 	@Test
 	void test() {
 		// test total earnings after 40 years
@@ -112,12 +121,7 @@ class TestTotalEarningsBuyHouse {
 		People.add(persLynne);
 		People.add(persJohn);
 
-		TaxParams txParams = new TaxParams(dbTaxlow, dbTaxhigh, dbTaxlowpc, dbTaxhighpc, dbISAlimit,
-				LocalDate.of(2031, 4, 5));
-		NIParams niParams = new NIParams(dbNIhighpc, dbNIlowpc, dbNIhighwk, dbNIlowwk);
-		SuplimentalTaxParams supParams = new SuplimentalTaxParams(dbCGTLimit, dbLowTaxDiviLimit, dbHighTaxDiviLimit,
-				dLowTaxCGTrate, dHighTaxGCTrate, dSRSB, dPSAlow, dPSAhigh, dRentAllowance, dDiviAllowance, dDiviRateLow,
-				dDiviRateHigh);
+
 
 		double dBudget = 72500.0;
 

@@ -22,7 +22,7 @@ public Transaction(String strName, double dAmnt, LocalDate dateTrans, double dBa
 		//buffer.append("Transaction [" + strName + " Amount=");
 		//buffer.append(NumberFormat.getCurrencyInstance().format(dMoney) + ", Date=" + dateTrans);
 		//buffer.append(", Balance=" + NumberFormat.getCurrencyInstance().format(dBalance) + "]");
-        buffer.append(strName + "\t"+ dateTrans +"\t" + NumberFormat.getCurrencyInstance().format(dBalance));
+        buffer.append(strName + "\t"+ dateTrans +"\t" + NumberFormat.getCurrencyInstance().format(dAmnt) +"\t" + NumberFormat.getCurrencyInstance().format(dBalance));
 		return buffer.toString();	
 	}
 

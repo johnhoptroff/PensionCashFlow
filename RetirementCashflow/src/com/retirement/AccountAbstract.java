@@ -17,10 +17,10 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 	private boolean boolEarnings;
 	private boolean boolTaxInterest;
 	private boolean boolLimitBalance;
+	private boolean isActive = true;
 	private List<Transaction> transactions = new ArrayList<>();
 	private Person persHolder;
 	private AccountAbstract accPayInterest;
-	private double dbMaximumBalance=1e10;
 	
 	public AccountAbstract(String strName, double dOpenBal, double dRate) {
 		this.dBalance = dOpenBal;
@@ -35,9 +35,18 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 		return 0.0;
 	}
 
-	public void withdraw(double dMoney,LocalDate dateOut) {
-		this.dBalance = this.dBalance - dMoney;
-		transactions.add(new Transaction("withdrawal",(dMoney*-1),dateOut,dBalance));
+	public double withdraw(double dMoney,LocalDate dateOut) {
+		double dChange = 0.0;
+		if(this.dBalance >= dMoney) {
+			this.dBalance = this.dBalance - dMoney;
+			transactions.add(new Transaction("withdrawal",(dMoney*-1),dateOut,dBalance));
+
+		}else {
+			dChange = dMoney - this.dBalance;
+			this.dBalance = 0.0;
+		}
+
+		return dChange;
 	}
 	public void addInterest(LocalDate date) {
 		double dMoney = this.dBalance * this.dRate;
@@ -81,7 +90,11 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 	}
 
 	public double getdBalance() {
-		return dBalance;
+		if(this.isActive) {
+			return dBalance;
+		}else {
+			return 0.0;
+		}
 	}
 	public boolean isEarnings() {
 		return boolEarnings;
@@ -116,6 +129,9 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 		}
 		if(this instanceof PremBondsAccount && (accOther instanceof TaxedAccount)) {
 			return 1;
+		}
+		if (this instanceof TaxedAccount && accOther instanceof TaxedAccount) {
+			return Double.compare(accOther.getdBalance(),getdBalance());
 		}
 		return result;
 	}
@@ -168,17 +184,17 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 		
 	}
 
-	public void setMaximumBalance(double d) {
-		this.dbMaximumBalance = d;
-		
-	}
-
-	public double getMaximumBalance() {
-		return dbMaximumBalance;
-	}
 
 	public Object getTransactions() {
 		return this.transactions;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 }

@@ -1,3 +1,0 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=13266.39, dRate=0.02, strName=R-R+shares]
-Transactions:
-withdrawal	2027-12-31	£0.00

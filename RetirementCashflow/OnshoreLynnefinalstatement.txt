@@ -1,7 +1,0 @@
-Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=105842.96, dRate=0.03, strName=OnshoreLynne]
-Transactions:
-interest	2027-01-01	£109,018.25
-interest	2028-01-01	£112,288.80
-withdrawal	2029-12-31	£73,139.11
-interest	2029-01-01	£75,333.29
-withdrawal	2030-12-31	£0.00

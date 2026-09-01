@@ -1,8 +1,0 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=11000.0, dRate=0.03, strName=Ford_John]
-Transactions:
-interest	2025-01-01	11330.0
-interest	2026-01-01	11669.9
-interest	2027-01-01	12019.997
-interest	2028-01-01	12380.59691
-interest	2029-01-01	12752.0148173
-withdrawal	2030-12-31	0.0

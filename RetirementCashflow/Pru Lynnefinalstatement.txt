@@ -1,5 +1,0 @@
-Account [Holder:Lynne Hoptroff balance:0.0, dOpenBal=40000.0, dRate=0.05, strName=Pru Lynne]
-Transactions:
-interest	2027-01-01	£42,000.00
-interest	2028-01-01	£44,100.00
-withdrawal	2029-12-31	£0.00

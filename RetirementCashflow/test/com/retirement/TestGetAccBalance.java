@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class TestGetAccBalance {
 
-    private final PremBondsAccount prems = new PremBondsAccount("prems",50000.0,0.05);
+    private final PremBondsAccount prems = new PremBondsAccount("prems",50000.0,0.05,50000.0);
 	Person john = new Person("John Hoptroff", null, null, null, null, 0, 0);
 
     @Test

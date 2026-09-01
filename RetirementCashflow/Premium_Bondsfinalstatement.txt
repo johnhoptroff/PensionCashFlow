@@ -1,2 +1,0 @@
-Account [Holder:Lynne Hoptroff balance:100000.0, dOpenBal=100000.0, dRate=0.039, strName=Premium_Bonds]
-Transactions:

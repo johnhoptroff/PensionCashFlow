@@ -15,7 +15,7 @@ public class Person {
 	private Double dInterest = 0.0;
 	private Double dDividend = 0.0;
 	private Double dNIableIncome = 0.0;
-	private Double dTotalIncome = 0.0;
+	private Double dNetIncome = 0.0;
 	private Double dPensionAmnt = 0.0;
 	private Double dEmployerPenAmnt = 0.0;
 	private List<StreamAbstract> streams;
@@ -27,6 +27,8 @@ public class Person {
 	private PensionAccount accSIPP;
 	private TaxForm taxform;
 	private AccountShares accShares;
+	private boolean boolHaveISA;
+	private ISAaccount accISA;
 
 
 	public Person(String strName, LocalDate dateBDay, List<StreamAbstract> streams, List<AccountAbstract> accounts,
@@ -49,6 +51,10 @@ public class Person {
 			if (account instanceof AccountShares) {
 				this.boolHaveShares = true;
 				this.accShares = (AccountShares) account;
+			}
+			if (account instanceof ISAaccount) {
+				this.boolHaveISA = true;
+				this.accISA = (ISAaccount) account;
 			}
 		});
 
@@ -84,12 +90,9 @@ public class Person {
 	}
 
 	public Double getdTotalIncome() {
-		return dTotalIncome;
+		return dTaxableIncome + dRentalIncome + dBondOffIncome + dBondOnIncome + dInterest + dDividend;
 	}
 
-	public void setdTotalIncome(Double dTotalIncome) {
-		this.dTotalIncome = dTotalIncome;
-	}
 
 	public PensionAccount getPensionAccount() {
 		return this.accPensionPot;
@@ -106,7 +109,7 @@ public class Person {
 		sbOutput.append(strName + ", Birthday=" + dateBDay + ", TaxableIncome="
 				+ NumberFormat.getCurrencyInstance().format(dTaxableIncome));
 		sbOutput.append(", NIableIncome=" + NumberFormat.getCurrencyInstance().format(dNIableIncome));
-		sbOutput.append(", TotalIncome=" + NumberFormat.getCurrencyInstance().format(dTotalIncome));
+		sbOutput.append(", TotalIncome=" + NumberFormat.getCurrencyInstance().format(getdTotalIncome()));
 		sbOutput.append(", AVC account=" + accPensionPot.getName());
 		sbOutput.append("\nPension Contribution=" + NumberFormat.getCurrencyInstance().format(dPensionAmnt));
 		sbOutput.append(", Employer Contribution=" + NumberFormat.getCurrencyInstance().format(dEmployerPenAmnt));
@@ -207,7 +210,7 @@ public class Person {
 			dBondOffIncome = 0.0;
 			dBondOnIncome = 0.0;
 			if (account instanceof TaxedAccount) {
-				dInterest += account.getdBalance()*((TaxedAccount) account).getInterest();	
+				dInterest += ((TaxedAccount) account).getInterest();	
 			}
 			// calculate dividend from shares account
 			if (account instanceof AccountShares) {
@@ -253,10 +256,20 @@ public class Person {
 	return bonds;
 	}
 
-	public double getNetIncome(LocalDate date) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getNetIncome() {
+		return this.dNetIncome;
 	}
 
+	public void setNetIncome(double d) {
+		this.dNetIncome = d;
+	}
+
+	public ISAaccount getISA() {
+		return this.accISA;
+	}
+
+	public boolean isISA() {
+		return this.boolHaveISA;
+	}
 
 }

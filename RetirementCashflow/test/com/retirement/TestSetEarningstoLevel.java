@@ -17,31 +17,6 @@ class TestSetEarningstoLevel {
 	private final PensionStream streamWorkPen4John = new PensionStream("*RRPension 4",LocalDate.of(2024,6,1),LocalDate.of(2035,4,23),10759.08,0.025);
 	private final PensionStream streamStatePenJohn = new PensionStream("StateJohn",LocalDate.of(2035,4,23),LocalDate.of(2100,1,1),12014.0,0.05);
 	
-	private final PensionAccount accSJPJohn = new PensionAccount("Aviva John",85687.5, 0.09);
-	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044);
-	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995, 0.06);
-	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",31707.98,0.0595);
-	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,0.03);
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
-	private final EmploymentStream streamSalaryLynne = new EmploymentStream("GSA-Lynne",LocalDate.of(2005,5,1),LocalDate.of(2026,6,1),44824.56,0.03);
-	private final PensionStream streamRentLynne = new PensionStream("RentLynne",LocalDate.of(2026,5,1),LocalDate.of(2100,1,1),4900.0,0.026);
-	private final PensionStream streamDiviLynne = new PensionStream("DiviLynne",LocalDate.of(2026,1,1),LocalDate.of(2100,1,1),150.0,0.015);
-	private final PensionStream streamLGPSPenLynne = new PensionStream("LGPSPension",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),11398.19,0.04);
-	private final PensionStream streamBankPenLynne = new PensionStream("* BankPen  *",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),7657.2,0.04);
-	private final PensionStream streamStatePenLynne = new PensionStream("StateLynne",LocalDate.of(2035,11,14),LocalDate.of(2100,1,1),12014.0,0.05);
-	
-	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044);
-	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300,0.06);
-	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,0.03);
-	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne",40000.0,0.05,LocalDate.of(2028,11,14));
-	
-	List<AccountAbstract> accountsLynne = new ArrayList<>();
-	List<AccountAbstract> accountsJohn = new ArrayList<>();
-	
-
-	List<StreamAbstract> StreamsJohn = new ArrayList<>();
-	List<StreamAbstract> StreamsLynne = new ArrayList<>();
-	
 	private final double dbTaxlow = 12570.0;
 	private final double dbTaxhigh = 50270.0;
 	private final double dbTaxlowpc = 0.20;
@@ -66,12 +41,42 @@ class TestSetEarningstoLevel {
 	private final double dDiviAllowance = 500.0;
 	private final double dDiviRateLow = 0.0875;
 	private final double dDiviRateHigh = 0.033;
+	private final double dPremMaxBal = 50000.0;
 	
 	TaxParams txParams = new TaxParams(dbTaxlow, dbTaxhigh, dbTaxlowpc, dbTaxhighpc, dbISAlimit, dtFrozenTh);
 	NIParams niParams = new NIParams(dbNIhighpc, dbNIlowpc, dbNIhighwk, dbNIlowwk);
 	SuplimentalTaxParams supParams = new SuplimentalTaxParams(dbCGTLimit, dbLowTaxDiviLimit, dbHighTaxDiviLimit,
 			dLowTaxCGTrate, dHighTaxGCTrate, dSRSB, dPSAlow, dPSAhigh, dRentAllowance, dDiviAllowance, dDiviRateLow,
 			dDiviRateHigh);
+	
+	
+	
+	private final PensionAccount accSJPJohn = new PensionAccount("Aviva John",85687.5, 0.09);
+	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044,dPremMaxBal);
+	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995, 0.06);
+	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",31707.98,0.0595);
+	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,0.03,txParams.getISAlimit());
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
+	private final EmploymentStream streamSalaryLynne = new EmploymentStream("GSA-Lynne",LocalDate.of(2005,5,1),LocalDate.of(2026,6,1),44824.56,0.03);
+	private final PensionStream streamRentLynne = new PensionStream("RentLynne",LocalDate.of(2026,5,1),LocalDate.of(2100,1,1),4900.0,0.026);
+	private final PensionStream streamDiviLynne = new PensionStream("DiviLynne",LocalDate.of(2026,1,1),LocalDate.of(2100,1,1),150.0,0.015);
+	private final PensionStream streamLGPSPenLynne = new PensionStream("LGPSPension",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),11398.19,0.04);
+	private final PensionStream streamBankPenLynne = new PensionStream("* BankPen  *",LocalDate.of(2028,11,14),LocalDate.of(2100,1,1),7657.2,0.04);
+	private final PensionStream streamStatePenLynne = new PensionStream("StateLynne",LocalDate.of(2035,11,14),LocalDate.of(2100,1,1),12014.0,0.05);
+	
+	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044,dPremMaxBal);
+	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300,0.06);
+	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,0.03,txParams.getISAlimit());
+	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne",40000.0,0.05,LocalDate.of(2028,11,14));
+	
+	List<AccountAbstract> accountsLynne = new ArrayList<>();
+	List<AccountAbstract> accountsJohn = new ArrayList<>();
+	
+
+	List<StreamAbstract> StreamsJohn = new ArrayList<>();
+	List<StreamAbstract> StreamsLynne = new ArrayList<>();
+	
+
 	
 	@Test
 	void testMaxNDLynne() {

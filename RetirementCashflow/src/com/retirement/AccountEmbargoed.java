@@ -13,6 +13,15 @@ public class AccountEmbargoed extends AccountAbstract {
 		
 	}
 
+	@Override
+	public double withdraw(double dMoney, LocalDate date) {
+		if(date.isAfter(dtEmbargoEnds)) {
+			return super.withdraw(dMoney, date);
+		}else {
+			return dMoney;
+		}
+	}
+
 	private LocalDate dtEmbargoEnds;
 	
 	public AccountEmbargoed(String strName, double dOpenBal, double dRate, LocalDate dtEmbargoEnds) {
@@ -20,6 +29,7 @@ public class AccountEmbargoed extends AccountAbstract {
 		super.setTaxInterest(false);
 		super.setEarnings(true);
 		this.setDtEmbargoEnds(dtEmbargoEnds);
+		super.setActive(false);
 	}
 
 	public LocalDate getDtEmbargoEnds() {
