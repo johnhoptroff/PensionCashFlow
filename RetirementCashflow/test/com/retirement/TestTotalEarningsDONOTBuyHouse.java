@@ -61,7 +61,7 @@ class TestTotalEarningsDONOTBuyHouse {
 	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John", 50000.0, 0.044,dMaxPremBal);
 	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares J", 13266.39, 0.02, 6311.0, 995, 0.06);
 	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John", 31707.98, 0.0595);
-	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn", 105842.96, 0.03,txParams.getISAlimit());
+	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn", 105842.96,LocalDate.of(2026, 4, 5), 0.03,txParams.getISAlimit());
 	private final AccOffBond accBondOffJohn = new AccOffBond("OffshoreJohn", 105842.96, 0.03, LocalDate.of(2014, 5, 14));
 	private final AccountEmbargoed accBungaJohn = new AccountEmbargoed("Bunga John", 120000.0, 0.0375,LocalDate.of(2035, 11, 14));
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
@@ -73,7 +73,7 @@ class TestTotalEarningsDONOTBuyHouse {
 	
 	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne", 50000.0, 0.044,dMaxPremBal);
 	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares L", 24962.68, 0.02, 10427.25, 2300,0.06);
-	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne", 106172.0, 0.03,txParams.getISAlimit());
+	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne", 106172.0,LocalDate.of(2026, 4, 5), 0.03,txParams.getISAlimit());
 	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne", 40000.0, 0.05,LocalDate.of(2028, 11, 14));
 	private final AccOnBond accBondOnLynne = new AccOnBond("OnshoreLynne", 105842.96, 0.03, LocalDate.of(2014, 5, 14));
 	private final AccountEmbargoed accBungaLynne = new AccountEmbargoed("Bunga Lynne", 120000.0, 0.0375,LocalDate.of(2035, 11, 14));
@@ -126,9 +126,9 @@ class TestTotalEarningsDONOTBuyHouse {
 
 
 
-		double dBudget = 5000.0;
+		double dBudget = 75000.0;
 
-		CashFlow cashFlow = new CashFlow(People, dBudget, dInflation, LocalDate.of(2027, 1, 1), txParams, niParams,
+		CashFlow cashFlow = new CashFlow(People, dBudget, dInflation, LocalDate.of(2026, 5, 4), txParams, niParams,
 				supParams);
 		System.out.println("starting test...");
 		try {

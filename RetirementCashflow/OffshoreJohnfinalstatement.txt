@@ -1,18 +1,10 @@
-Account [Holder:John Hoptroff balance:125000.0, dOpenBal=85000.0, dRate=0.0, strName=OffshoreJohn]
+Account [Holder:John Hoptroff balance:85000.0, dOpenBal=85000.0, dRate=0.0, strName=OffshoreJohn]
 Transactions:
-deposit	2027-04-05	£5,000.00	£90,000.00
-interest	2027-04-05	£0.00	£90,000.00
-deposit	2028-04-05	£5,000.00	£95,000.00
-interest	2028-04-05	£0.00	£95,000.00
-deposit	2029-04-05	£5,000.00	£100,000.00
-interest	2029-04-05	£0.00	£100,000.00
-deposit	2030-04-05	£5,000.00	£105,000.00
-interest	2030-04-05	£0.00	£105,000.00
-deposit	2031-04-05	£5,000.00	£110,000.00
-interest	2031-04-05	£0.00	£110,000.00
-deposit	2032-04-05	£5,000.00	£115,000.00
-interest	2032-04-05	£0.00	£115,000.00
-deposit	2033-04-05	£5,000.00	£120,000.00
-interest	2033-04-05	£0.00	£120,000.00
-deposit	2034-04-05	£5,000.00	£125,000.00
-interest	2034-04-05	£0.00	£125,000.00
+interest	2027-04-05	£0.00	£85,000.00
+interest	2028-04-05	£0.00	£85,000.00
+interest	2029-04-05	£0.00	£85,000.00
+interest	2030-04-05	£0.00	£85,000.00
+interest	2031-04-05	£0.00	£85,000.00
+interest	2032-04-05	£0.00	£85,000.00
+interest	2033-04-05	£0.00	£85,000.00
+interest	2034-04-05	£0.00	£85,000.00

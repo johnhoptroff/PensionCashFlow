@@ -60,10 +60,11 @@ public class CashFlow {
 		calcNetWorth(false);
 		sbOut.append(
 				"Starting Calculation: Initial Net Worth: " + NumberFormat.getCurrencyInstance().format(dNetWorth));
-		for (LocalDate date = dateStart; date.isBefore(dateEnd); date = date.plusYears(1)) {
+		for (LocalDate date = dateStart.plusYears(1); date.isBefore(dateEnd); date = date.plusYears(1)) {
 			// loop through all the years in the term
 			// dateStart set in the constructor
 			// at the loop end when accounts are settled it assumes the date is year end
+			resetTaxYears(date);
 			calcNetWorth(false);
 			rationaliseAccounts(date);
 			inflateAll(date);// slightly pessimistic because it takes off money before applying interest
@@ -77,13 +78,23 @@ public class CashFlow {
 		return dNetWorth;
 	}
 
+	private void resetTaxYears(LocalDate date) {
+		people.forEach((person) -> {
+			person.getAccounts().forEach((account) -> {
+				if (account instanceof ISAaccount) {
+					((ISAaccount) account).setTaxYear(date);
+				}
+			});
+		});
+		
+	}
+
 	private void rationaliseAccounts(LocalDate date) throws Exception {
 		double dPaid = 0;
 		double dChange = 0.0;
 		Collections.sort(accounts); // sort on interest rate so the lowest rate account is used
 		double dGap = dBudget - calcTotalNetIncome(date);
 		// transfer any unused ISA allowances to ISAs
-		depositToISAs(date);
 		while (dGap != 0) {
 			// if(dNetWorth <=0.0)throw new Exception("funds depleted!");
 			if (dGap > 0) {
@@ -95,38 +106,44 @@ public class CashFlow {
 				for (int i = 0; i < accounts.size(); i++) {
 					AccountAbstract acc = accounts.get(i);
 					TaxForm taxform = acc.getHolder().getTaxForm(date);
-					if (acc instanceof TaxedAccount) {
-						dChange = acc.withdraw(dGap, date);
+					if (acc instanceof TaxedAccount && (dPaid != dGap)) {
+						dChange = acc.withdraw((dGap - dPaid), date);
 						taxform.setInterest(acc.getdBalance() * acc.getdRate());
 						dPaid += (dGap - dChange);
-						break;
 					}
-					if (accounts.get(i) instanceof PensionAccount) {
-						dChange = acc.withdraw(dGap, date);
-						taxform.setPension(dGap - dChange);
-						dPaid += (dGap - dChange);
-						break;
+					if (acc instanceof PensionAccount && (dPaid != dGap)) {
+						dChange = acc.withdraw((dGap - dPaid), date);
+						taxform.setPension((dGap - dPaid) - dChange);
+						dPaid += ((dGap - dPaid) - dChange);
 					}
-					if (accounts.get(i) instanceof BondAccount) {
-						dChange = acc.withdraw(dGap, date);
+					if (acc instanceof BondAccount && (dPaid != dGap)) {
+						dChange = acc.withdraw((dGap - dPaid), date);
 						taxform.setBondsCharge((BondAccount) acc, (dGap - dChange));
-						break;
+						dPaid += ((dGap - dPaid) - dChange);
 					}
-					dChange = acc.withdraw(dGap, date);
-					dPaid += (dGap - dChange);
+					boolean isOtherAcc = ((acc instanceof PremBondsAccount) || (acc instanceof AccountShares) || (acc instanceof AccountEmbargoed));
+					if((dGap !=dPaid) && isOtherAcc) {
+						dChange = acc.withdraw((dGap - dPaid), date);
+						dPaid += ((dGap - dPaid) - dChange);	
+					}
+					if (acc instanceof ISAaccount && (dPaid != dGap)) {
+						dChange = acc.withdraw((dGap - dPaid), date);
+						dPaid += ((dGap - dPaid) - dChange);
+					}
 					if (acc.getdBalance() == 0.0) {
-						acc.close(date);
-						accounts.remove(acc);
+						//acc.close(date);
+						//accounts.remove(acc);
 					}
+					//dGap = dGap - dPaid;
 				}
-				dGap = dBudget - calcTotalNetIncome(date);
-				dGap -= dPaid;
+				dGap = dBudget - (calcTotalNetIncome(date) + dPaid);
+
 			} else { // shows a surplus so transfer to the best accounts using last accounts in list.
 				dChange=0.0;
 				boolean isGoodAccount;
 				System.out.println("Surplus!!  " + date);
 				Collections.sort(accounts);
-				for (int i = (accounts.size() - 1); i > 0; i--) {
+				for (int i = (accounts.size() - 1); i >= 0; i--) {
 					AccountAbstract acc = accounts.get(i);
 					isGoodAccount = ((acc instanceof ISAaccount)|| (acc instanceof TaxedAccount) || (acc instanceof AccountEmbargoed));
 					if( dGap != 0.0 && isGoodAccount) {
@@ -135,10 +152,13 @@ public class CashFlow {
 						System.out.println(acc.getName() + "  " + dGap);
 					}
 				}
-				dGap = 0.0;
+				if(dGap != 0.0) {
+					throw new Exception("unable to rationalise accounts");
+				}
 			}
 
 		}
+		depositToISAs(date);
 		calcNetWorth(false);
 		sbOut.append(":Net worth after rationalising accounts:" + NumberFormat.getCurrencyInstance().format(dNetWorth));
 		sbBalances.append("\n" + date + "\t");
@@ -169,14 +189,15 @@ public class CashFlow {
 				for (int j = 0; j < taxed.size(); j++) {
 					TaxedAccount ta = taxed.get(j);
 					dShortfall -= ta.withdraw(dTopup, date); // if there is not enough balance dShortfall is positive
-					dRepay = isa.deposit((dTopup - dShortfall), date); // if there is not enough ISA allowance for this tax year dRepay is positive
+					//whatever gets withdrawn from here needs to be paid into ISA
+					dRepay = isa.deposit((dTopup + dShortfall), date); // if there is not enough ISA allowance for this tax year dRepay is positive
 					if (dRepay != 0.0) {
 						ta.deposit(dRepay, date);
 					}
 					if (ta.getdBalance() == 0.0) {
-						ta.close(date);
-						taxed.remove(ta);
-						accounts.remove(ta);
+						//ta.close(date);
+						//taxed.remove(ta);
+						//accounts.remove(ta);
 					}
 				}
 			}
@@ -237,8 +258,8 @@ public class CashFlow {
 			// this.personInstantaneous = person;
 			// income amounts need to be initialised to stop calculating cumulative amounts
 			Person person = people.get(i);
-			person.setNIableIncome(0.0);
-			person.setTaxableIncome(0.0);
+			//person.setNIableIncome(0.0);
+			//person.setTaxableIncome(0.0);
 
 			// create person's tax form and calculate stoppages
 			TaxForm taxForm = person.getTaxForm(txYearEnd); // TODO improvement if this is a map of Tax forms with tax

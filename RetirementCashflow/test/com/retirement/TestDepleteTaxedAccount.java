@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-class TestDepositToISAs {
+class TestDepleteTaxedAccount {
 	// accounts setup as of 1/1/2025
 	double dInflation = 0.0;
 
@@ -49,7 +49,7 @@ class TestDepositToISAs {
 			dLowTaxCGTrate, dHighTaxGCTrate, dSRSB, dPSAlow, dPSAhigh, dRentAllowance, dDiviAllowance, dDiviRateLow,
 			dDiviRateHigh);
 	
-	private final PensionStream streamWorkPen1John = new PensionStream("*RRPension 1", LocalDate.of(2026, 4, 5),LocalDate.of(2100, 1, 1), 10000.0, 0.0);
+	private final PensionStream streamWorkPen1John = new PensionStream("*RRPension 1", LocalDate.of(2026, 4, 5),LocalDate.of(2100, 1, 1), 0.0, 0.0);
 
 	private final PensionAccount accSJPJohn = new PensionAccount("SJP  John", 115000.0, 0.0);
 	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John", 50000.0, 0.0,dMaxPremBal);
@@ -87,13 +87,13 @@ class TestDepositToISAs {
 
 
 
-		double dBudget = 5000.0;
+		double dBudget = 10000.0;
 
 		CashFlow cashFlow = new CashFlow(People, dBudget, dInflation, LocalDate.of(2026, 4, 5), txParams, niParams,
 				supParams);
 		System.out.println("starting test...");
 		try {
-			assertEquals(438500.0, cashFlow.getResidual(LocalDate.of(2034, 12, 31)), 0.1);
+			assertEquals(318500.0, cashFlow.getResidual(LocalDate.of(2034, 12, 31)), 0.1);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

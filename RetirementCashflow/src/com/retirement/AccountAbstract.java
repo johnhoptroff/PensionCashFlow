@@ -37,6 +37,7 @@ public abstract class AccountAbstract implements Comparable<AccountAbstract>{
 
 	public double withdraw(double dMoney,LocalDate dateOut) {
 		double dChange = 0.0;
+		if(dMoney <=0.0) return 0.0;
 		if(this.dBalance >= dMoney) {
 			this.dBalance = this.dBalance - dMoney;
 			transactions.add(new Transaction("withdrawal",(dMoney*-1),dateOut,dBalance));

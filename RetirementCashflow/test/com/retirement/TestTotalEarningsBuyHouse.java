@@ -71,13 +71,13 @@ class TestTotalEarningsBuyHouse {
 	
 	private final PensionAccount accAvivaJohn = new PensionAccount("Aviva_John", 104250.0, 0.05);
 	private final PensionAccount accPruLynne = new PensionAccount("Pru_Lynne", 22512.0, 0.05);
-	private final ISAaccount accLumpJohn = new ISAaccount("Av_JH_notax", 34750.0, 0.05,txParams.getISAlimit());
-	private final ISAaccount accFordLynne = new ISAaccount("Pru_LH_notax", 7504.0, 0.05,txParams.getISAlimit());
+	private final ISAaccount accLumpJohn = new ISAaccount("Av_JH_notax", 34750.0,LocalDate.of(2026, 4, 5), 0.05,txParams.getISAlimit());
+	private final ISAaccount accFordLynne = new ISAaccount("Pru_LH_notax", 7504.0,LocalDate.of(2026, 4, 5), 0.05,txParams.getISAlimit());
 
 	// private final Account accPremBonds = new
 	// Account("Premium_Bonds",100000.0,0.039,false,false);
 	private final AccountShares accRRShares = new AccountShares("R-R+shares", 40000.0, 0.02, 6311.0, 995, 0.06);
-	private final ISAaccount accISAs = new ISAaccount("ISAs", 263700.0, 0.04,txParams.getISAlimit()); // includes £100k tax free part of mum's
+	private final ISAaccount accISAs = new ISAaccount("ISAs", 263700.0,LocalDate.of(2026, 4, 5), 0.04,txParams.getISAlimit()); // includes £100k tax free part of mum's
 																				// bonds
 	
 	@Test

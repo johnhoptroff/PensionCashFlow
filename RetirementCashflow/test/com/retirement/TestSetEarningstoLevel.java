@@ -55,7 +55,7 @@ class TestSetEarningstoLevel {
 	private final PremBondsAccount accBondsJohn = new PremBondsAccount("Bonds John",50000.0,0.044,dPremMaxBal);
 	private final AccountShares accRRSharesJohn = new AccountShares("R-R+shares",13266.39,0.02,6311.0,995, 0.06);
 	private final TaxedAccount accFordJohn = new TaxedAccount("Ford John",31707.98,0.0595);
-	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,0.03,txParams.getISAlimit());
+	private final ISAaccount accISAJohn = new ISAaccount("ISAsJohn",105842.96,LocalDate.of(2026, 4, 5),0.03,txParams.getISAlimit());
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	
 	private final EmploymentStream streamSalaryLynne = new EmploymentStream("GSA-Lynne",LocalDate.of(2005,5,1),LocalDate.of(2026,6,1),44824.56,0.03);
 	private final PensionStream streamRentLynne = new PensionStream("RentLynne",LocalDate.of(2026,5,1),LocalDate.of(2100,1,1),4900.0,0.026);
@@ -66,7 +66,7 @@ class TestSetEarningstoLevel {
 	
 	private final PremBondsAccount accBondsLynne = new PremBondsAccount("Bonds Lynne",50000.0,0.044,dPremMaxBal);
 	private final AccountShares accRRSharesLynne = new AccountShares("R-R+shares",24962.68,0.02,10427.25,2300,0.06);
-	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,0.03,txParams.getISAlimit());
+	private final ISAaccount accISALynne = new ISAaccount("ISAsLynne",106172.0,LocalDate.of(2026, 4, 5),0.03,txParams.getISAlimit());
 	private final AccountEmbargoed accPruLynne = new AccountEmbargoed("Pru Lynne",40000.0,0.05,LocalDate.of(2028,11,14));
 	
 	List<AccountAbstract> accountsLynne = new ArrayList<>();
