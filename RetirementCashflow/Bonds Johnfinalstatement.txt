@@ -1,4 +1,5 @@
-Account [Holder:John Hoptroff balance:0.0, dOpenBal=50000.0, dRate=0.044, strName=Bonds John]
+Account [Holder:John Hoptroff balance:0.0, dOpenBal=50000.0, dRate=0.025, strName=Bonds John]
 Transactions:
-withdrawal	2052-01-01	24749.080800889053
-withdrawal	2053-01-01	0.0
+withdrawal	2047-01-01	37708.667428701854
+withdrawal	2048-01-01	16720.15924171325
+withdrawal	2049-01-01	0.0
